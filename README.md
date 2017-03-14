@@ -1,5 +1,10 @@
 # JQXXXX
 
+## Project Overview
+For the first stage, we will be doing the already-ended [Walmart Recruiting: Trip Type Classification project](https://www.kaggle.com/c/walmart-recruiting-trip-type-classification).
+
+
+
 ## Github Usage Guide
 Welcome to the Qishi Machine Learning Advanced Study Group! 
 
@@ -12,8 +17,8 @@ Here we will briefly introduce the basic usage of this Github repository.
 
 **To get started, we will demonstrate an example here to your name to `JQXXXX/kaggle/collaborators.txt`**
 
-1. First, download this repo to your local machine. You can choose to use either command-line-interface (CLI) or third-party repo management apps (such as GitHub Desktop or SourceTree). Here I will use CTL.
-2. `$ git checkout -b YOUR_NAME`
+1. Download this repo to your local machine. You can choose to use either command-line-interface (CLI) or third-party repo management apps (such as **GitHub Desktop** or **SourceTree**). Here I will use CLI.
+2. Use `$ git checkout -b YOUR_NAME` to create a local branch with your name
 3. add your name to the `collaborators.txt` file
 4. Now if you type `$ git status`, you will see something like `	modified:   collaborators.txt`
 5. To add this commit, do `$ git add collaborators.txt` or `$ git add .` to include all changes.
@@ -24,7 +29,7 @@ Here we will briefly introduce the basic usage of this Github repository.
 
 
 
-## Python Virtual Environment Install Guide
+## Python Virtual Environment Set-up Guide
 
 Please make sure you've installed `Python 2.7` on your machine. It's a good practice to have a separate virtual environment of Python for this project, to make sure everyone will be using the version of modules for development.
 
