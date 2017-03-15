@@ -12,7 +12,7 @@
 * [使用conda设置virtualenv](https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/20/conda/)
 
 ## How to solve Walmart Recruiting competition #OPEN# 
-* There is no answere yet.
+* There is no answer yet.
 
 
 # Notes
