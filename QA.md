@@ -18,3 +18,17 @@
 # Notes
 
 ## The first note should start from here.
+
+## Image contest vs non-image contest?
+* The reasons we choose non-image contest are
+1. Image contest has more randomness .  Non-image contest often has a certain general methods which are more suitable for learning.
+2. Image contest needs some special domain knowledge that is not easy to grasp in short period. 
+3. Image contest are often computing intensive.
+
+## What are the common methods for cracking non-image contest?
+1. Ensemble upon individual models
+2. Feature engineering based on common sense or domain knowledge.
+
+## Can each individual model use ensemble methods?
+* Yes, sky is the limit.
+
