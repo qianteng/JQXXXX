@@ -44,8 +44,5 @@ git push
 # get changes from remote repository to local repository
 git pull
 
-# merge changes from local rep to upstream local
-git merge upstream/master
-
 # push chagnes from local upstream to remote upstream
 git push upstream
