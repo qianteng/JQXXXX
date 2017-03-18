@@ -32,8 +32,9 @@ git config --remove-section remote.upstream
 )
 
 # sync with upstream
-git pull upstream master
 git fetch upstream
+/or/
+git pull upstream master
 
 # merge upstream to local master
 git merge upstream/master
