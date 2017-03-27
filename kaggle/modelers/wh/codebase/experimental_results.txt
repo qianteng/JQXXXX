@@ -1,0 +1,17 @@
+RandomForestClassifier(n_estimators=100, n_jobs=4)
+Feature ranking:
+1.  feature 5  :  ScanCount_sum_groupby_vn (0.146234)
+2.  feature 12 :  Encoded_DepartmentDescription_has_max_by_vn (0.136101)
+3.  feature 10 :  FinelineNumber_has_max_by_vn (0.126257)
+4.  feature 8  :  Encoded_Upc_nunique_groupby_vn (0.093432)
+5.  feature 7  :  FinelineNumber_nunique_groupby_vn (0.086363)
+6.  feature 6  :  Encoded_DepartmentDescription_nunique_groupby_vn (0.068791)
+7.  feature 11 :  Encoded_DepartmentDescription_max_by_vn (0.065487)
+8.  feature 4  :  Encoded_Weekday (0.065123)
+9.  feature 3  :  Encoded_Upc (0.060467)
+10. feature 2  :  Encoded_DepartmentDescription (0.055747)
+11. feature 1  :  FinelineNumber (0.052079)
+12. feature 9  :  FinelineNumber_max_by_vn (0.032862)
+13. feature 0  :  ScanCount (0.011058)
+Score: 0.6123093149686295
+Log loss: 2.64528643116

@@ -6,7 +6,7 @@ def aggreate_features(df):
     # group by visit number
     groupby_vn = df.groupby('VisitNumber', as_index=True)
     # sum of scancount per visit
-    df = df.join(groupby_vn['ScanCount'].sum(), on='VisitNumber', rsuffix='_sum_groupby_vn')
+    #df = df.join(groupby_vn['ScanCount'].sum(), on='VisitNumber', rsuffix='_sum_groupby_vn')
     # number of distinct department covered per visit
     df = df.join(groupby_vn.agg({'Encoded_DepartmentDescription': pd.Series.nunique}), on='VisitNumber',
                  rsuffix='_nunique_groupby_vn')
@@ -29,5 +29,12 @@ def aggreate_features(df):
                  .agg(lambda x: stats.mode(x['Encoded_DepartmentDescription'])[0]), on='VisitNumber',
                  rsuffix='_has_max_by_vn')
 
+    # number of returned items per visit
+    df = df.join(groupby_vn[['ScanCount']].agg(lambda x: -x[x < 0].sum()), on='VisitNumber',
+                 rsuffix='_returned_items_by_vn')
+
+    # bought items per visit
+    df = df.join(groupby_vn[['ScanCount']].agg(lambda x: x[x > 0].sum()), on='VisitNumber',
+                 rsuffix='_purchased_items_by_vn')
     return df
 
