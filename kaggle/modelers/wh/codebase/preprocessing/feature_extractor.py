@@ -6,7 +6,7 @@ def aggreate_features(df):
     # group by visit number
     groupby_vn = df.groupby('VisitNumber', as_index=True)
     # sum of scancount per visit
-    #df = df.join(groupby_vn['ScanCount'].sum(), on='VisitNumber', rsuffix='_sum_groupby_vn')
+    df = df.join(groupby_vn['ScanCount'].sum(), on='VisitNumber', rsuffix='_sum_groupby_vn')
     # number of distinct department covered per visit
     df = df.join(groupby_vn.agg({'Encoded_DepartmentDescription': pd.Series.nunique}), on='VisitNumber',
                  rsuffix='_nunique_groupby_vn')

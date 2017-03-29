@@ -1,3 +1,23 @@
+
+XGBoostMutliClass(eta=0.1, max_depth=6, nthread=4, num_round=5, silent=1)
+1. feature 11 : Encoded_DepartmentDescription_has_max_by_vn (0.135551)
+2. feature 13 : ScanCount_purchased_items_by_vn (0.129917)
+3. feature 9 : FinelineNumber_has_max_by_vn (0.124469)
+4. feature 7 : Encoded_Upc_nunique_groupby_vn (0.096143)
+5. feature 6 : FinelineNumber_nunique_groupby_vn (0.080364)
+6. feature 10 : Encoded_DepartmentDescription_max_by_vn (0.066343)
+7. feature 5 : Encoded_DepartmentDescription_nunique_groupby_vn (0.065772)
+8. feature 4 : Encoded_Weekday (0.064907)
+9. feature 3 : Encoded_Upc (0.060493)
+10. feature 2 : Encoded_DepartmentDescription (0.057254)
+11. feature 1 : FinelineNumber (0.053116)
+12. feature 8 : FinelineNumber_max_by_vn (0.032754)
+13. feature 12 : ScanCount_returned_items_by_vn (0.021712)
+14. feature 0 : ScanCount (0.011204)
+
+classification accuracy : 0.631135
+Log loss: 2.17541434135
+
 RandomForestClassifier(n_estimators=100, n_jobs=4)
 Feature ranking:
 1.  feature 5  :  ScanCount_sum_groupby_vn (0.146234)
