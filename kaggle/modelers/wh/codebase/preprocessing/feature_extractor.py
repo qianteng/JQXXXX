@@ -40,16 +40,32 @@ def aggregate_features(df):
     return df
 
 
-def aggregate_features_v2(df):
-    # group by visit number
+def aggregate_features_v2(df, quantile=0.3):
 
+    # pick a list of fineline numbers that have high occurrences.
+    fn_stat = df.groupby('FinelineNumber', as_index=False)['ScanCount'].sum()
+    fn_list = fn_stat[fn_stat['ScanCount'] > fn_stat['ScanCount'].quantile(q=quantile)]['FinelineNumber']
+    out = df[['VisitNumber']].drop_duplicates()
+    # create dummies for finelien number
+    count = 0
+    for fn in fn_list:
+        if count % 100 == 0:
+            print "%d of %d fineline number features have been added." %(count, len(fn_list))
+        count += 1
+        data = df[df['FinelineNumber'] == fn]
+        data = data.groupby(['VisitNumber'], as_index=False)['ScanCount'].sum()
+        data.rename(columns={'ScanCount': 'fn_%s' %(fn)}, inplace=True)
+        out = out.merge(data, how='left', on=['VisitNumber'], copy=True)
+        out['fn_%s' %(fn)].fillna(value=0, inplace=True)
+
+    out = out.set_index('VisitNumber')
+    # create dummies for department descriptions
     dummies = pd.get_dummies(df.DepartmentDescription)
     df[dummies.columns] = dummies
     df[dummies.columns] = df[dummies.columns].apply(lambda x: x * df['ScanCount'])
-
     groupby_vn = df.groupby('VisitNumber', as_index=True)
 
-    out = pd.DataFrame(index=df['VisitNumber'].unique())
+    #out = pd.DataFrame(index=df['VisitNumber'].unique())
     if 'TripType' in df.columns:
         out['TripType'] = groupby_vn['TripType'].max()
     out['ScanCountSum'] = groupby_vn['ScanCount'].sum()
