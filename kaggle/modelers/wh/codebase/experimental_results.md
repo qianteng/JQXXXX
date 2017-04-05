@@ -1,7 +1,9 @@
 xgb_clf = models.XGBoostMutliClass(nthread=8, eta=0.1, max_depth=20, num_round=100, silent=1)
+
 Private Score: 0.69731
+
 3360 features
-finelline number with occurences above 0.3 quantile
+including finelline number with occurences above 0.3 quantile
 
 xgb_clf = models.XGBoostMutliClass(nthread=4, eta=0.1, max_depth=20, num_round=50, silent=1)
 1. feature 3 : FinelineNumber_has_max (0.143909)
