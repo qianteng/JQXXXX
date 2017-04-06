@@ -11,6 +11,7 @@ import scipy as sp
 import pandas as pd
 from datetime import datetime
 import xgboost as xgb
+import sklearn
 from sklearn.metrics import log_loss
 
 from utility_common import feature_extraction, data_path
@@ -27,7 +28,8 @@ y = pd.get_dummies(target).values.argmax(1)
 
 X1 = X1[v_train-1]
 
-nModels = 10
+#nModels = 10
+nModels = 1
 
 sh = .2
 cs = .4
@@ -36,17 +38,21 @@ xgb_params = {'eta':sh, 'silent':1, 'objective':'multi:softprob', 'num_class':38
               'colsample_bytree':cs, 'subsample':bf,
               'eval_metric':'mlogloss', 'nthread':8}
 
-nt_dict = {4:range(500, 951, 50), 5:range(300, 701, 50)}
+#nt_dict = {4:range(500, 951, 50), 5:range(300, 701, 50)}   # maxdepth: num_round
+nt_dict = {4:[5], 5:[6]}   # maxdepth: num_round
 
 pr_xgb_dict = {key:[np.zeros((v_train.size, 38)) for _ in range(len(nt_lst))] \
-               for key, nt_lst in nt_dict.iteritems()}
+               for key, nt_lst in nt_dict.iteritems()}     # dict to store all predictions
 scores = []
 t0 = datetime.now()
-for fold, idx in enumerate(kf):
-    train_idx, valid_idx = idx
+
+
+#for fold in range(4):
+for fold in 0,:
+    train_idx, valid_idx = sklearn.model_selection.train_test_split(range(X1.shape[0]), test_size=.25, random_state = fold)
     dtrain = xgb.DMatrix(X1[train_idx], label = y[train_idx])
     dvalid = xgb.DMatrix(X1[valid_idx])    
-    for tc in [4, 5]:
+    for tc in nt_dict.keys():
         nt_lst = nt_dict[tc]
         nt = np.max(nt_lst)
         xgb_params['max_depth'] = tc
@@ -67,14 +73,15 @@ for fold, idx in enumerate(kf):
 
 pr_xgb_dict = {key:[pr/nModels for pr in pr_lst] for key, pr_lst in pr_xgb_dict.iteritems()}
 
-output = open(data_path + 'pr_xgb087.pkl', 'wb')
-pickle.dump(pr_xgb_dict, output)
-output.close()
+#output = open(data_path + 'pr_xgb087.pkl', 'wb')
+#pickle.dump(pr_xgb_dict, output)
+#output.close()
 
 r087 = pd.DataFrame(scores)
 r087.to_csv('logs/r087.csv')
 
-r087_summary = pd.DataFrame(index=range(300, 951, 50))
+#r087_summary = pd.DataFrame(index=range(300, 951, 50))
+r087_summary = pd.DataFrame(index=[5, 6])
 params = ['ntree']
 for tc in [4, 5]:
     grouped_avg = r087[(r087.nModels==nModels) & (r087.tc==tc)].groupby(params).avg
