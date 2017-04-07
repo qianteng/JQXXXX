@@ -3,7 +3,7 @@ from scipy import stats
 import numpy as np
 
 
-def aggregate_features(df):
+def aggregate_features_v1(df):
     # group by visit number
     groupby_vn = df.groupby('VisitNumber', as_index=True)
     # sum of scancount per visit
@@ -83,3 +83,79 @@ def aggregate_features_v2(df, quantile=0.3):
         out[col_name] = groupby_vn[[col_name]].agg(np.sum)
 
     return out
+
+
+def generate_general_features(df):
+
+    out = df[['VisitNumber']].drop_duplicates()
+
+    # sum of scancount per visit
+    data = df.groupby(['VisitNumber'], as_index=False)['ScanCount'].sum()
+    data.rename(columns={'ScanCount': 'ScanCount_sum'}, inplace=True)
+    out = out.merge(data, how='left', on='VisitNumber')
+
+    # number of returned items per visit
+    df['neg_count'] = df['ScanCount']
+    df.ix[df['ScanCount'] > 0, 'neg_count'] = 0
+    data = df.groupby(['VisitNumber'], as_index=False)['neg_count'].sum().abs()
+    data.rename(columns={'neg_count': 'returned_items'}, inplace=True)
+    out = out.merge(data, how='left', on='VisitNumber')
+
+    # number of bought items per visit
+    df['pos_count'] = df['ScanCount']
+    df.ix[df['ScanCount'] < 0, 'pos_count'] = 0
+    data = df.groupby(['VisitNumber'], as_index=False)['pos_count'].sum()
+    data.rename(columns={'pos_count': 'bought_items'}, inplace=True)
+    out = out.merge(data, how='left', on='VisitNumber')
+
+    # number of distinct department covered per visit
+    data = df.groupby(['VisitNumber', 'DepartmentDescription'], as_index=False)['ScanCount'].count()
+    data = data.groupby(['VisitNumber'], as_index=False)['ScanCount'].count()
+    data.rename(columns={'ScanCount': 'nunique_department'}, inplace=True)
+    out = out.merge(data, how='left', on='VisitNumber', copy=True)
+
+    # number of distinct fineline number covered per visit
+    data = df.groupby(['VisitNumber', 'FinelineNumber'], as_index=False)['ScanCount'].count()
+    data = data.groupby(['VisitNumber'], as_index=False)['ScanCount'].count()
+    data.rename(columns={'ScanCount': 'nunique_fineline'}, inplace=True)
+    out = out.merge(data, how='left', on='VisitNumber', copy=True)
+
+    # number of distinct UPC covered per visit
+    data = df.groupby(['VisitNumber', 'Encoded_Upc'], as_index=False)['ScanCount'].count()
+    data = data.groupby(['VisitNumber'], as_index=False)['ScanCount'].count()
+    data.rename(columns={'ScanCount': 'nunique_UPC'}, inplace=True)
+    out = out.merge(data, how='left', on='VisitNumber', copy=True)
+
+    # max number of items purchased under a single fineline number per visit
+    # the fineline number under which the most items are purchased per visit
+    data = df.groupby(['VisitNumber', 'FinelineNumber'], as_index=False)['ScanCount'].sum()
+    idx = data.groupby(['VisitNumber'], as_index=False)['ScanCount'].idxmax()
+    data = data.ix[idx, :]
+    data.rename(columns={'ScanCount': 'max_num_in_one_fineline', 'FinelineNumber': 'fl_has_max'}, inplace=True)
+    out = out.merge(data, how='left', on='VisitNumber', copy=True)
+
+    # the department under which the most items are purchased per visit
+    # max number of items purchased under a single department per visit
+    data = df.groupby(['VisitNumber', 'DepartmentDescription'], as_index=False)['ScanCount'].sum()
+    idx = data.groupby(['VisitNumber'], as_index=False)['ScanCount'].idxmax()
+    data = data.ix[idx, :]
+    data.rename(columns={'ScanCount': 'max_num_in_one_department', 'DepartmentDescription':'dep_has_max'}, inplace=True)
+    out = out.merge(data, how='left', on='VisitNumber', copy=True)
+
+    return out
+
+def generate_categorical_features(df, quantile=0.1):
+    pass
+
+
+def aggregate_features(df):
+    pass
+
+
+
+
+
+
+
+
+
