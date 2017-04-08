@@ -12,15 +12,16 @@ from datetime import datetime
 import xgboost as xgb
 from sklearn.metrics import log_loss
 
-from utility_common import feature_extraction, data_path
+from utility_common import feature_extraction, data_path, result_path, log_path
 
 # XGB
 # 2015/12/25 7h22m
 # nModels = 50
 nModels = 1
 
-# X1.shape[1]: 138610
+# X1.shape[1]: 147448
 X1, target, v_train, v_test = feature_extraction(useUpc=True)
+#X1, target, v_train, v_test = feature_extraction(useUpc=False)
 y = pd.get_dummies(target).values.argmax(1)
 N = X1.shape[0]
 
@@ -31,7 +32,7 @@ N = X1.shape[0]
 num_round = 5
 xgb_params = {'objective':'multi:softprob', 'num_class':38,
               'eta':.2, 'max_depth':5, 'colsample_bytree':.4, 'subsample':.8,
-              'silent':1, 'nthread':8}
+              'silent':1, 'eval_metric':'mlogloss'}
 
 dtrain = xgb.DMatrix(X1[v_train-1], label = y)
 dtest = xgb.DMatrix(X1[v_test-1])
@@ -53,9 +54,8 @@ for j in range(nModels):
                    'train_avg':log_loss(y, pr_xgb_train/(j+1))})
     print scores[-1], datetime.now() - t0
 
-path_log = 'logs/'
 pr002 = pd.DataFrame(scores)
-pr002.to_csv(path_log+'pr002.csv')
+pr002.to_csv(log_path+'pr002.csv')
 
 pr002.tail(1)
 #     nModel     seed  train_avg  train_each
@@ -65,8 +65,8 @@ log_loss(y, pr_xgb_train/nModels)
 # 0.27275720210758203
 
 pr_xgb_test /= nModels
-np.save(data_path + 'pr002_xgb_test.npy', pr_xgb_test)
+np.save(result_path + 'pr002_xgb_test.npy', pr_xgb_test)
 
 pr_xgb_train /= nModels
-np.save(data_path + 'pr002_xgb_train.npy', pr_xgb_train)
+np.save(result_path + 'pr002_xgb_train.npy', pr_xgb_train)
 

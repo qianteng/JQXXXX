@@ -5,12 +5,15 @@ import ipdb
 
 # Path
 data_path = '../Data/'
+result_path = '../Result/'
+log_path = './log/'
 file_train = data_path + 'train.csv'
 file_test = data_path + 'test.csv'
 
 def sign_log1p_abs(x):
     """Rescale data to smaller range and avoid the outliers skew away result.
     """
+    
     return np.sign(x) * np.log1p(np.abs(x))
 
 def DataFrame_tocsr(df, row, col, val=None, label2row=None, label2col=None,
@@ -35,7 +38,7 @@ def DataFrame_tocsr(df, row, col, val=None, label2row=None, label2col=None,
          label2row: a map from a row label to a row number of mat
          label2column: a map from a column label to a column number of mat
     """
-    #ipdb.set_trace()
+
     if label2row is None:
         row_labels = df[row].dropna().unique() # pd.Series.unique does not sort, all unique labels in the row
         label2row = pd.Series(range(row_labels.size), index=row_labels) #map label to a number
@@ -76,9 +79,15 @@ def feature_extraction(training=None, test=None, useUpc=False):
     """
     
     if training is None and test is None:
-        training = pd.read_csv(file_train)
-        test = pd.read_csv(file_test)
+        #training = pd.read_csv(file_train)
+        training = pd.read_csv(file_train, dtype = {'DepartmentDescription':str, 'FinelineNumber':str,
+                                                    'ScanCount':int, 'TripeType':str ,'Upc':str,
+                                                    'VisitNumber':int, 'Weekday':str})
+        test = pd.read_csv(file_test, dtype = {'DepartmentDescription':str, 'FinelineNumber':str,
+                                                    'ScanCount':int, 'TripeType':str ,'Upc':str,
+                                                    'VisitNumber':int, 'Weekday':str})
 
+    #training['UpcLen']= training['Upc'].map(lambda x: len(str(x)))        
     v_train = training.VisitNumber.unique()
     num_train = v_train.size
     v_test = test.VisitNumber.unique()
@@ -93,30 +102,31 @@ def feature_extraction(training=None, test=None, useUpc=False):
     Weekday = data_all.groupby('VisitNumber').Weekday.first()
 
     data_all['ScanCount_log1p'] = sign_log1p_abs(data_all.ScanCount)
-    data_all.loc[data_all.DepartmentDescription=='MENSWEAR', 'DepartmentDescription'] = 'MENS WEAR'
+    data_all.loc[data_all.DepartmentDescription=='MENSWEAR', 'DepartmentDescription'] = 'MENS WEAR'    #both MENSEWEAR and MENS WEAR are in the data
     data_all.DepartmentDescription.fillna('-1', inplace=True)
     data_all.FinelineNumber.fillna(-1, inplace=True)
     data_all.Upc.fillna(-1, inplace=True)
+    data_all['full_Upc'] = data_all['Upc'].map(full_Upc)
+    data_all['company'] = data_all['full_Upc'].map(company)
+    data_all['numbering'] = data_all['full_Upc'].map(numbering)
 
     X_wday = sp.sparse.coo_matrix(pd.get_dummies(Weekday.map(w2int)).values)   # Convert categorical variable into dummy/indicator variables
     N = X_wday.shape[0]                   # number of visits in training and test
     X_SC_sum = data_all.groupby('VisitNumber').ScanCount.sum().values.reshape((N,1))
-    X_SC_sum_sign = data_all.groupby('VisitNumber').ScanCount.apply(lambda x:1 if x.sum()>0 else 0).values.reshape((N, 1))
+    #X_SC_sum_sign = data_all.groupby('VisitNumber').ScanCount.apply(lambda x:1 if x.sum()>0 else 0).values.reshape((N, 1))
+    X_SC_sum_sign = np.sign(X_SC_sum)
     X_dept = DataFrame_tocsr(data_all,
                              row='VisitNumber',
                              col='DepartmentDescription',
                              val='ScanCount')
-
     X_fine = DataFrame_tocsr(data_all,
                              row='VisitNumber',
                              col='FinelineNumber',
-                             val='ScanCount_log1p')
-
-
+                             val='ScanCount_log1p')    
     fine_dept = data_all[['FinelineNumber', 'DepartmentDescription']].drop_duplicates()
     fine_dept_cnt = fine_dept.FinelineNumber.value_counts()              # one FinelineNumber corresponds to multimple DepartmentDescription
     tmp = data_all.DepartmentDescription + '_' + data_all.FinelineNumber.astype(str)
-    tmp[data_all.FinelineNumber.isin(fine_dept_cnt[fine_dept_cnt<2].index)] = np.nan # make Dept_Fine nan if FinelineNumber appeared less than 2 times
+    #tmp[data_all.FinelineNumber.isin(fine_dept_cnt[fine_dept_cnt<2].index)] = np.nan # make Dept_Fine nan if FinelineNumber appeared less than 2 times
     data_all['Dept_Fine'] = tmp
     X_dept_fine = DataFrame_tocsr(data_all,
                                   row='VisitNumber',
@@ -128,19 +138,66 @@ def feature_extraction(training=None, test=None, useUpc=False):
     W_diff[W_diff!=0] = 1
     day = (W_diff.cumsum() + 1).values    # the first day is 1, the second day is 2 ...
     X_day = pd.get_dummies(day)
-    # quasiHour_float = []
-    # for i in range(1, 32):
-    #     tmp = day[day == i]
-    #     n = tmp.size
-    #     quasiHour_float = np.append(quasiHour_float, np.arange(n) / float(n))
-    # hour = (quasiHour_float * 24).astype(int)
 
+    ## X_day:31, X_SC_sum_sign:1, X_SC_sum:1, X_dept: 68, X_fine:5354, X_dept_fine:8461, X_upc:124694, X_company:6140, X_numbering:7
     X = sp.sparse.hstack((X_day, X_SC_sum_sign, sign_log1p_abs(X_SC_sum),
                           X_dept, X_fine, X_dept_fine)).tocsr()
+    #ipdb.set_trace()
     if useUpc:
         X_upc = DataFrame_tocsr(data_all,
                                 row='VisitNumber',
                                 col='Upc',
                                 val='ScanCount_log1p')
-        X = sp.sparse.hstack((X, X_upc)).tocsr()
+        X_company = DataFrame_tocsr(data_all,
+                                    row='VisitNumber',
+                                    col='company',
+                                    val='ScanCount_log1p')
+        X_numbering = DataFrame_tocsr(data_all,
+                                      row='VisitNumber',
+                                      col='numbering',
+                                      val='ScanCount_log1p')
+        X = sp.sparse.hstack((X, X_upc, X_company, X_numbering)).tocsr()
     return X, target, v_train, v_test
+
+def full_Upc(upc):
+    """Analyze upc. less than 12 digit UPC are missing 1 checksum digit at the end. [8, 9, 10] digit UPC miss 0 at the front too.
+    Even less digit UPC are in-house goods. Those UPC are not found on www.upcdeal.us
+    
+    Args:
+         upc: string of upc
+    """
+    try:
+        odd = map(int, ','.join(upc[-1::-2]).split(','))
+        even = map(int, ','.join(upc[-2::-2]).split(','))
+        total = sum(odd)*3 + sum(even)
+        rem = total % 10
+        check_sum =  0 if rem==0 else (10-rem)
+        if len(upc) < 8 or len(upc)==12:
+            return upc
+        else:
+            upc += repr(check_sum)
+            full = ''.join(['0']*(12-len(upc))) + upc
+            return full
+    except:
+        return np.nan
+
+def company(full_upc):
+    """Get the 1-5 digit as company code. Less than 12 digit full Upc are in-house goods
+    """
+    try:
+        if len(full_upc)==12:
+            return full_upc[1:6]
+        else:
+            return '000000'
+    except:
+        return np.nan
+def numbering(full_upc):
+    """Get the 0 digit as the numbering system
+    """
+    try:
+        return full_upc[0]
+    except:
+        return np.nan
+        
+
+        
