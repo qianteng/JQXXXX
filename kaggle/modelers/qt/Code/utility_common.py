@@ -139,24 +139,25 @@ def feature_extraction(training=None, test=None, useUpc=False):
     day = (W_diff.cumsum() + 1).values    # the first day is 1, the second day is 2 ...
     X_day = pd.get_dummies(day)
 
+    X_company = DataFrame_tocsr(data_all,
+                                row='VisitNumber',
+                                col='company',
+                                val='ScanCount_log1p')
+    X_numbering = DataFrame_tocsr(data_all,
+                                  row='VisitNumber',
+                                  col='numbering',
+                                  val='ScanCount_log1p')
+    
     ## X_day:31, X_SC_sum_sign:1, X_SC_sum:1, X_dept: 68, X_fine:5354, X_dept_fine:8461, X_upc:124694, X_company:6140, X_numbering:7
     X = sp.sparse.hstack((X_day, X_SC_sum_sign, sign_log1p_abs(X_SC_sum),
-                          X_dept, X_fine, X_dept_fine)).tocsr()
+                          X_dept, X_fine, X_dept_fine, X_company, X_numbering)).tocsr()
     #ipdb.set_trace()
     if useUpc:
         X_upc = DataFrame_tocsr(data_all,
                                 row='VisitNumber',
                                 col='Upc',
                                 val='ScanCount_log1p')
-        X_company = DataFrame_tocsr(data_all,
-                                    row='VisitNumber',
-                                    col='company',
-                                    val='ScanCount_log1p')
-        X_numbering = DataFrame_tocsr(data_all,
-                                      row='VisitNumber',
-                                      col='numbering',
-                                      val='ScanCount_log1p')
-        X = sp.sparse.hstack((X, X_upc, X_company, X_numbering)).tocsr()
+        X = sp.sparse.hstack((X, X_upc)).tocsr()
     return X, target, v_train, v_test
 
 def full_Upc(upc):
