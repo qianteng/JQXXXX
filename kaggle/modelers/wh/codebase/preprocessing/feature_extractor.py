@@ -1,6 +1,7 @@
 import pandas as pd
 from scipy import stats
 import numpy as np
+import scipy as sp
 
 
 def aggregate_features_v1(df):
@@ -50,7 +51,7 @@ def aggregate_features_v2(df, quantile=0.3):
     count = 0
     for fn in fn_list:
         if count % 100 == 0:
-            print "%d of %d fineline number features have been added." %(count, len(fn_list))
+            print("%d of %d fineline number features have been added." %(count, len(fn_list)))
         count += 1
         data = df[df['FinelineNumber'] == fn]
         data = data.groupby(['VisitNumber'], as_index=False)['ScanCount'].sum()
@@ -144,12 +145,47 @@ def generate_general_features(df):
 
     return out
 
-def generate_categorical_features(df, quantile=0.1):
-    pass
+
+# Convert categoricla variable into dummy variables and return a dense matrix
+def generate_categorical_features(df, row_name, col_name, val_name, aggregate=False, quantile=0.1):
+
+    row_labels = df[row_name].unique()
+    label2row = pd.Series(range(row_labels.size), index=row_labels)
+
+    if aggregate:
+        df = df.groupby([row_name, col_name], as_index=False)[val_name].sum()
+
+    col_stat = df.groupby(col_name, as_index=False)[val_name].sum()
+    col_labels = col_stat[col_stat[val_name] > col_stat[val_name].quantile(q=quantile)][col_name]
+
+    #col_labels = df[col_name].unique()
+    label2col = pd.Series(range(col_labels.size), index=col_labels)
+
+    cols = df[col_name].map(label2col)
+    valid_mask = ~cols.isnull()
+    rows = df[row_name].map(label2row)[valid_mask]
+    vals = df[val_name][valid_mask]
+    cols = cols[valid_mask]
+
+    dense_matrix = sp.sparse.coo_matrix((vals, (rows, cols)), shape=(label2row.size, label2col.size)).tocsr()
+    return dense_matrix
 
 
 def aggregate_features(df):
-    pass
+    y = df.groupby(['VisitNumber'])['TripType'].first().values
+    general_features = generate_general_features(df)
+    general_features.drop('dep_has_max', axis=1, inplace=True)
+    fineline_features = generate_categorical_features(df, 'VisitNumber', 'FinelineNumber', 'ScanCount', aggregate=True,
+                                                      quantile=0.1)
+    department_features = generate_categorical_features(df, 'VisitNumber', 'DepartmentDescription', 'ScanCount',
+                                                        aggregate=True, quantile=0.0)
+
+    upc_features = generate_categorical_features(df, 'VisitNumber', 'Encoded_Upc', 'ScanCount', aggregate=True,
+                                                quantile=0.6)
+
+    X = sp.sparse.hstack((general_features, fineline_features, department_features, upc_features)).tocsr()
+    return X, y
+
 
 
 
