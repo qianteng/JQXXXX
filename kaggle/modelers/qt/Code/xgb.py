@@ -21,7 +21,6 @@ nModels = 1
 
 # X1.shape[1]: 147448
 X1, target, v_train, v_test = feature_extraction(useUpc=True)
-#X1, target, v_train, v_test = feature_extraction(useUpc=False)
 y = pd.get_dummies(target).values.argmax(1)
 N = X1.shape[0]
 
@@ -29,7 +28,7 @@ N = X1.shape[0]
 # r087
 
 # num_round = 550
-num_round = 5
+num_round = 550
 xgb_params = {'objective':'multi:softprob', 'num_class':38,
               'eta':.2, 'max_depth':5, 'colsample_bytree':.4, 'subsample':.8,
               'silent':1, 'eval_metric':'mlogloss'}
