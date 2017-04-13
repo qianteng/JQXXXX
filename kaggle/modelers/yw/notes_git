@@ -21,10 +21,10 @@ upstream url: https://github.com/qianteng/JQXXXX
 fork url: https://github.com/WangYijia/JQXXXX
 
 # create local repository from fork url
-git clone https://WangYijia:Wyj_0529933@github.com/WangYijia/JQXXXX.git
+git clone https://WangYijia:{_my_password}@github.com/WangYijia/JQXXXX.git
 
 # add remote upstream tag
-git remote add upstream https://WangYijia:Wyj_0529933@github.com/qianteng/JQXXXX.git
+git remote add upstream https://WangYijia:{_my_password}@github.com/qianteng/JQXXXX.git
 
 (
 # remove tag if needed
