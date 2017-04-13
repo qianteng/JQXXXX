@@ -70,6 +70,7 @@ uniqueVisitNumber = sort(unique(train$VisitNumber))
 splits = split(uniqueVisitNumber, ceiling(1:length(uniqueVisitNumber)/10000))
 str(splits)
 
+
 for (i in 1:length(splits)) {
     dat = train %>% filter(TripType %in% splits[[i]]) %>% 
         group_by(TripType, VisitNumber) %>% 
@@ -110,11 +111,6 @@ generatefourLengthCounts<-function(x)
     indexes_length<-length(which(str_length(x$Upc)<=4))
     indexes_length
 }
-
-
-
-
-# convert day of the week to number
 
 
 train$DepartmentDescription = as.factor(train$DepartmentDescription)
