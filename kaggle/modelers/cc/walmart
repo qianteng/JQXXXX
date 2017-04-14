@@ -1,0 +1,106 @@
+Last login: Mon Apr 10 21:14:25 on ttys002
+Jingyis-MacBook-Pro:~ jingyichen$ cd Documents/
+Jingyis-MacBook-Pro:Documents jingyichen$ vim walmart.txt 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Jingyis-MacBook-Pro:Documents jingyichen$ vim walmart.txt 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pandas as pd
+from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score
+from sklearn import svm
+import numpy as np
+import csv
+
+training_data=pd.read_csv("/Users/jingyichen/Downloads/train.csv")
+test_data=pd.read_csv("/Users/jingyichen/Downloads/test.csv")
+training_data['IsWeekend']=np.where(training_data['Weekday'].isin(['Saturday','Sunday']),1,0)
+#turn weekend into boolean IsWeekend
+TripType_IsWeekend=training_data[['VisitNumber','TripType','IsWeekend']].groupby('VisitNumber').mean()
+#how many products each "VisitNumber" get
+ScanCount=training_data[['VisitNumber','ScanCount']].groupby('VisitNumber').sum()
+#merge row, one row per VisitNumber
+FinelineNumber=training_data.groupby(['VisitNumber'])['FinelineNumber'].apply(lambda x:','.join(x.astype(str)))
+DepartmentDescription=training_data.groupby(['VisitNumber'])['DepartmentDescription'].apply(lambda x:','.join(x.astype(str)))
+Upc=training_data.groupby(['VisitNumber'])['Upc'].apply(lambda x:','.join(x.astype(str)))
+merged_data=TripType_IsWeekend.join(ScanCount, how='inner', sort=False).join(FinelineNumber, how='inner', sort=False).join(DepartmentDescription, how='inner', sort=False).join(Upc, how='inner', sort=False)
+Y_train=merged_data['TripType']
+X_train=merged_data[['IsWeekend','ScanCount']]
+
+test_data['IsWeekend']=np.where(test_data['Weekday'].isin(['Saturday','Sunday']),1,0)
+#turn weekend into boolean IsWeekend
+IsWeekend_test=test_data[['VisitNumber','IsWeekend']].groupby('VisitNumber').mean()
+#how many products each "VisitNumber" get
+ScanCount_test=test_data[['VisitNumber','ScanCount']].groupby('VisitNumber').sum()
+#merge row, one row per VisitNumber
+FinelineNumber_test=test_data.groupby(['VisitNumber'])['FinelineNumber'].apply(lambda x:','.join(x.astype(str)))
+DepartmentDescription_test=test_data.groupby(['VisitNumber'])['DepartmentDescription'].apply(lambda x:','.join(x.astype(str)))
+Upc_test=test_data.groupby(['VisitNumber'])['Upc'].apply(lambda x:','.join(x.astype(str)))
+merged_data_test=IsWeekend_test.join(ScanCount_test, how='inner', sort=False).join(FinelineNumber_test, how='inner', sort=False).join(DepartmentDescription_test, how='inner', sort=False).join(Upc_test, how='inner', sort=False)
+X_test=merged_data_test[['IsWeekend','ScanCount']]
+
+clf = svm.SVC()
+clf.fit(X_train[:50000], Y_train[:50000])
+ID=IsWeekend_test.reset_index()['VisitNumber'].values.T.tolist()
+re=clf.predict(X_test)
+
+###ScanCount==-1, tripType=999
+a[['TripType','ScanCount']][a['ScanCount']==-1]
+
+
+ss=pd.read_csv("/Users/jingyichen/Downloads/sample_submission.csv")
+column_names=list(ss)
+with open("/Users/jingyichen/Downloads/result.csv", 'a') as myfile:
+    wr=csv.writer(myfile)
+    wr.writerow(column_names)
+    for i in range(len(re)):
+        line=[0]*len(column_names)
+        line[0]=ID[i]
+        line[column_names.index('TripType_{}'.format(re[i]))]=1
+        wr.writerow(line)
+
+
+model = XGBClassifier()
+model.fit(X_train, Y_train)
+re = model.predict(X_test)
