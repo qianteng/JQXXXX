@@ -2,6 +2,7 @@ Data Intuition:
 ----------------
 1. Upc, DepartmentDescription, FinelineNumber: see data_intuition.ipynb
 
+
 Feature Engineer:
 -----------------
 1. Weekday: map Sun-Sat to 0-6
@@ -12,6 +13,7 @@ Feature Engineer:
                                                 in all occurrences of Upc[row_ind]/Department[row_ind]/FinelineNumber[row_ind].., 
                                                 probability that it's of TripType[col_ind] 
 3. ScanCount: add Positive ScanCount, Negative ScanCount, Sum Abs ScanCount, Sum ScanCount, grouped by VisitNumber
+
 
 Parameter Tune:
 ---------------
