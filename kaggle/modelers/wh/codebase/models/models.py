@@ -7,10 +7,8 @@ import pandas as pd
 
 
 class RandomForestMultiClass(BaseEstimator):
-    def __init__(self, n_estimators=None, n_jobs=None):
-        self.n_estimators = 50 if n_estimators is None else n_estimators
-        self.n_jobs = 4 if n_jobs is None else n_jobs
-        self.clf = RandomForestClassifier(n_estimators=self.n_estimators, n_jobs=self.n_jobs)
+    def __init__(self, n_estimators=50, n_jobs=4):
+        self.clf = RandomForestClassifier(n_estimators=n_estimators, n_jobs=n_jobs)
 
     def fit(self, X, y):
         self.clf.fit(X, y)
@@ -23,7 +21,7 @@ class RandomForestMultiClass(BaseEstimator):
 
 
 class XGBoostMutliClass(BaseEstimator):
-    def __init__(self, nthread, eta, max_depth, num_round, silent):
+    def __init__(self, nthread, eta, max_depth, num_round, silent, booster='gbtree'):
         self.silent = silent
         self.nthread = nthread
         self.eta = eta
@@ -33,7 +31,7 @@ class XGBoostMutliClass(BaseEstimator):
         self.model = None
         self.le = preprocessing.LabelEncoder()
         self.max_depth = max_depth
-
+        self.booster = booster
         '''
         self.gamma = gamma
         self.min_child_weight = min_child_weight
@@ -53,7 +51,8 @@ class XGBoostMutliClass(BaseEstimator):
             "eta": self.eta,
             "silent": self.silent,
             "max_depth": self.max_depth,
-            "num_class": self.num_classes}
+            "num_class": self.num_classes,
+            "booster": self.booster}
         '''
         "gamma": self.gamma,
          "min_child_weight": self.min_child_weight,
@@ -66,10 +65,10 @@ class XGBoostMutliClass(BaseEstimator):
          "alpha": self.l1_reg
         '''
         self.model = xgb.train(params, sf, self.num_round)
-
         return self
 
     def predict_proba(self, X):
+
         xg_test = xgb.DMatrix(X)
         y_probs = self.model.predict(xg_test).reshape(X.shape[0], self.num_classes)
         classes = self.le.inverse_transform([i for i in range(self.num_classes)])
