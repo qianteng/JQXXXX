@@ -16,25 +16,25 @@ def sign_log1p_abs(x):
     
     return np.sign(x) * np.log1p(np.abs(x))
 
-def DataFrame_tocsr(df, row, col, val=None, label2row=None, label2col=None,
+def DataFrame_tocsc(df, row, col, val=None, label2row=None, label2col=None,
                     return_tbl=False, min_count=1):
-    """ Convert 2 or 3 colmns of a DataFrame to csr. Two columns are converted to row and column separaetely 
+    """ Convert 2 or 3 colmns of a DataFrame to csc. Two columns are converted to row and column separaetely 
     and the optional third column is the value. The row and col labels are mapped to integers, used as indice. 
     col labels are sorted by frequency, such that the labels that appears the most frequently is at column 0.
     row lables are not sorted.
 
     Args:
          df: DataFrame, has 2 or 3 columns
-         row: a column name to be used as row in output csr matrix
-         col: a column name to be used as col in output csr matrix
-         val: a column name to be used as values in output csr matrix
+         row: a column name to be used as row in output csc matrix
+         col: a column name to be used as col in output csc matrix
+         val: a column name to be used as values in output csc matrix
          label2row: function, dict, or Series to map row label to indice
          label2col: function, dict, or Series to map col label to indice
          return_tbl: return label2row and label2col if True
          min_count: minimum number of count in col to be included in output
 
     Returns:
-         mat: csr matrix The columns are sorted by their frequency(decending).
+         mat: csc matrix The columns are sorted by their frequency(decending).
          label2row: a map from a row label to a row number of mat
          label2column: a map from a column label to a column number of mat
     """
@@ -58,7 +58,7 @@ def DataFrame_tocsr(df, row, col, val=None, label2row=None, label2col=None,
     cols = df[col].map(label2col)
     if cols.size == 0:
         return False
-    mat = sp.sparse.coo_matrix((vals, (rows, cols)), shape=(label2row.size, label2col.size)).tocsr()
+    mat = sp.sparse.coo_matrix((vals, (rows, cols)), shape=(label2row.size, label2col.size)).tocsc()
     if return_tbl:
         return mat, label2row, label2col
     else:
@@ -72,7 +72,7 @@ def feature_extraction(training=None, test=None, useUpc=False):
          test: DataFrame, test data set
          useUpc: use Upc as a feature if True
     Returns:
-         X: csr_matrix, (n_visitnumber, n_feature)
+         X: csc_matrix, (n_visitnumber, n_feature)
          target: label of the training data set
          v_train: index of training data set in X (must be substracted by 1 before slicing X) 
          v_test: index of test data set in X (must be substracted by 1 before slicing X) 
@@ -115,11 +115,11 @@ def feature_extraction(training=None, test=None, useUpc=False):
     X_SC_sum = data_all.groupby('VisitNumber').ScanCount.sum().values.reshape((N,1))
     #X_SC_sum_sign = data_all.groupby('VisitNumber').ScanCount.apply(lambda x:1 if x.sum()>0 else 0).values.reshape((N, 1))
     X_SC_sum_sign = np.sign(X_SC_sum)
-    X_dept = DataFrame_tocsr(data_all,
+    X_dept = DataFrame_tocsc(data_all,
                              row='VisitNumber',
                              col='DepartmentDescription',
                              val='ScanCount')
-    X_fine = DataFrame_tocsr(data_all,
+    X_fine = DataFrame_tocsc(data_all,
                              row='VisitNumber',
                              col='FinelineNumber',
                              val='ScanCount_log1p')    
@@ -128,7 +128,7 @@ def feature_extraction(training=None, test=None, useUpc=False):
     tmp = data_all.DepartmentDescription + '_' + data_all.FinelineNumber.astype(str)
     #tmp[data_all.FinelineNumber.isin(fine_dept_cnt[fine_dept_cnt<2].index)] = np.nan # make Dept_Fine nan if FinelineNumber appeared less than 2 times
     data_all['Dept_Fine'] = tmp
-    X_dept_fine = DataFrame_tocsr(data_all,
+    X_dept_fine = DataFrame_tocsc(data_all,
                                   row='VisitNumber',
                                   col='Dept_Fine',
                                   val='ScanCount_log1p')
@@ -139,25 +139,25 @@ def feature_extraction(training=None, test=None, useUpc=False):
     day = (W_diff.cumsum() + 1).values    # the first day is 1, the second day is 2 ...
     X_day = pd.get_dummies(day)
 
-    X_company = DataFrame_tocsr(data_all,
+    X_company = DataFrame_tocsc(data_all,
                                 row='VisitNumber',
                                 col='company',
                                 val='ScanCount_log1p')
-    X_numbering = DataFrame_tocsr(data_all,
+    X_numbering = DataFrame_tocsc(data_all,
                                   row='VisitNumber',
                                   col='numbering',
                                   val='ScanCount_log1p')
     
     ## X_day:31, X_SC_sum_sign:1, X_SC_sum:1, X_dept: 68, X_fine:5354, X_dept_fine:8461, X_upc:124694, X_company:6140, X_numbering:7
     X = sp.sparse.hstack((X_day, X_SC_sum_sign, sign_log1p_abs(X_SC_sum),
-                          X_dept, X_fine, X_dept_fine, X_company, X_numbering)).tocsr()
+                          X_dept, X_fine, X_dept_fine, X_company, X_numbering)).tocsc()
     #ipdb.set_trace()
     if useUpc:
-        X_upc = DataFrame_tocsr(data_all,
+        X_upc = DataFrame_tocsc(data_all,
                                 row='VisitNumber',
                                 col='Upc',
                                 val='ScanCount_log1p')
-        X = sp.sparse.hstack((X, X_upc)).tocsr()
+        X = sp.sparse.hstack((X, X_upc)).tocsc()
     return X, target, v_train, v_test
 
 def full_Upc(upc):

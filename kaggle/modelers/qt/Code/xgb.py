@@ -28,7 +28,7 @@ N = X1.shape[0]
 # r087
 
 # num_round = 550
-num_round = 550
+num_round = 5
 xgb_params = {'objective':'multi:softprob', 'num_class':38,
               'eta':.2, 'max_depth':5, 'colsample_bytree':.4, 'subsample':.8,
               'silent':1, 'eval_metric':'mlogloss'}

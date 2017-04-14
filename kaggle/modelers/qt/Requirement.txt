@@ -1,5 +1,8 @@
-numpy=1.12.0
-pandas=0.19.2
-scikit-learn=0.18.1
+python==2.7.13
+pndas==0.19.2
+scikit-learn==0.18.1
 ipdb==0.10.1
-python==2.7
+python==2.7.13
+xgboost==0.6a2
+setuptools==27.2.0
+matplotlib==2.0.0
