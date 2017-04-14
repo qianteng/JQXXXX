@@ -1,0 +1,34 @@
+Data Intuition:
+----------------
+1. Upc, DepartmentDescription, FinelineNumber: see data_intuition.ipynb
+
+Feature Engineer:
+-----------------
+1. Weekday: map Sun-Sat to 0-6
+2. Upc, DepartmentDescription, FinelineNumber : encode categorical columns to N x 38 matrix, 
+                                                N: number of records
+                                                38 columns: occurrence frequency of given Upc/Department/FinelineNumber as given TripType
+                                                e.g.: encoded matrix (row_ind, col_ind): 
+                                                in all occurrences of Upc[row_ind]/Department[row_ind]/FinelineNumber[row_ind].., 
+                                                probability that it's of TripType[col_ind] 
+3. ScanCount: add Positive ScanCount, Negative ScanCount, Sum Abs ScanCount, Sum ScanCount, grouped by VisitNumber
+
+Parameter Tune:
+---------------
+1. gparam = {'max_depth':range(3,10,2),
+              'min_child_weight':range(1,10,2)}
+
+2. gparam = {'max_depth': [1, 3, 5, 9, 11, 13, 15, 20, 25],
+              'min_child_weight': [1, 5, 9, 15]}
+              
+3. gparam = {'gamma': [i / 10.0 for i in range(0, 5)]}     
+
+4. gparam = { 'subsample': [i / 10.0 for i in range(6, 10)],
+               'colsample_bytree': [i / 10.0 for i in range(6, 10)]}
+
+==> {'learning_rate': 0.1, 'n_estimators': 500, \
+    'objective': 'multi:softprob', 'gamma': 0, 'subsample': 0.8, \
+    'colsample_bytree': 0.8, 'max_depth':9, 'min_child_weight': 9, 'num_class': 38, 'seed': 27, 'silent':False}
+
+
+
