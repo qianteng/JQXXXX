@@ -11,9 +11,9 @@ def read_data():
 
 
 def impute(df):
-    df['Upc'] = df['Upc'].fillna(0)
+    df['Upc'].fillna(0, inplace=True)
     df['FinelineNumber'] = df['FinelineNumber'].fillna(-1).astype('int')
-
+    df['DepartmentDescription'].fillna('UNKNOWN', inplace=True)
 
 # Encode categorical variables
 def encode(df1, columns, df2=None, col=None, encode_dict=None):
@@ -36,13 +36,16 @@ def encode(df1, columns, df2=None, col=None, encode_dict=None):
                 df2[col].replace(key, value, inplace=True)
             df2['Encoded_' + col] = df2[col]
 
+
 def clean():
     train, test = read_data()
     impute(train)
     impute(test)
+    train.replace('MENSWEAR', 'MENS WEAR', inplace=True)
+    test.replace('MENSWEAR', 'MENS WEAR', inplace=True)
     wd_dict = {'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6, 'Sunday': 7}
-    encode(train, ['Upc'], df2=test, col='Weekday', encode_dict=wd_dict)
+    # encode(train, ['Upc'], df2=test, col='Weekday', encode_dict=wd_dict)
     # encode(test, ['Upc'], col='Weekday', encode_dict=wd_dict)
-    train.drop(['Weekday', 'Upc'], axis=1, inplace=True)
-    test.drop(['Weekday', 'Upc'], axis=1, inplace=True)
+    # train.drop(['Weekday', 'Upc'], axis=1, inplace=True)
+    # test.drop(['Weekday', 'Upc'], axis=1, inplace=True)
     return train, test
