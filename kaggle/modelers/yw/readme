@@ -31,4 +31,8 @@ Parameter Tune:
     'colsample_bytree': 0.8, 'max_depth':9, 'min_child_weight': 9, 'num_class': 38, 'seed': 27, 'silent':False}
 
 
-
+Model Forecast:
+---------------
+submit_df = pd.concat([softprob.idxmax(axis=1), softprob.max(axis=1)], axis=1).reset_index()
+submit_df.columns = ['VisitNumber', 'TripType', 'prob']
+submit_pivot = submit_df.groupby('VisitNumber').max().pivot(columns='TripType')
