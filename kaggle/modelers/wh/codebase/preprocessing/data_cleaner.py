@@ -41,8 +41,8 @@ def clean():
     impute(train)
     impute(test)
     wd_dict = {'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6, 'Sunday': 7}
-    encode(train, ['DepartmentDescription', 'Upc'], df2=test, col='Weekday', encode_dict=wd_dict)
-    #encode(test, ['DepartmentDescription', 'Upc'], col='Weekday', dict=wd_dict)
-    train.drop(['Weekday', 'Upc', 'DepartmentDescription'], axis=1, inplace=True)
-    test.drop(['Weekday', 'Upc', 'DepartmentDescription'], axis=1, inplace=True)
+    encode(train, ['Upc'], df2=test, col='Weekday', encode_dict=wd_dict)
+    # encode(test, ['Upc'], col='Weekday', encode_dict=wd_dict)
+    train.drop(['Weekday', 'Upc'], axis=1, inplace=True)
+    test.drop(['Weekday', 'Upc'], axis=1, inplace=True)
     return train, test
