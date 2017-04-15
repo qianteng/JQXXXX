@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
@@ -11,39 +11,39 @@ import pandas as pd
 import xgboost as xgb
 
 
-# In[2]:
+# In[ ]:
 
 train = pd.read_csv('~/Kaggle/walmart/train.csv', dtype={'Upc': str, 'FinelineNumber': str})
 
 
-# In[3]:
+# In[ ]:
 
 test = pd.read_csv('~/Kaggle/walmart/test.csv', dtype={'Upc': str, 'FinelineNumber': str})
 
 
-# In[4]:
+# In[ ]:
 
 target_column = train.columns[0]
 target_column
 
 
-# In[5]:
+# In[ ]:
 
 data = train.append(test)[train.columns]
 
 
-# In[6]:
+# In[ ]:
 
 feature_columns = []
 
 
-# In[7]:
+# In[ ]:
 
 data['NumberItems'] = data.groupby('VisitNumber')['VisitNumber'].transform('count')
 feature_columns += ['NumberItems']
 
 
-# In[8]:
+# In[ ]:
 
 day_number_by_name = {d: n for n, d in enumerate(calendar.day_name)}
 data['WeekdayNumber'] = data['Weekday'].map(day_number_by_name)
@@ -51,25 +51,37 @@ data['IsWeekday'] = data['WeekdayNumber'] < 5
 feature_columns += ['WeekdayNumber', 'IsWeekday']
 
 
-# In[9]:
+# In[ ]:
 
-data['LenUpc'] = data['Upc'].fillna('').apply(len)
-feature_columns += ['LenUpc']
+# data['LenUpc'] = data['Upc'].fillna('').apply(len)
+# feature_columns += ['LenUpc']
+
+data['Upc'] = data['Upc'].fillna('0').apply(int)
+feature_columns += ['Upc']
 
 
-# In[10]:
+# In[ ]:
 
 data['TotalScanCount'] = data.groupby('VisitNumber')['ScanCount'].transform('sum')
 feature_columns += ['ScanCount', 'TotalScanCount']
 
 
-# In[11]:
+# In[ ]:
 
 departments = list(data['DepartmentDescription'].unique())
 feature_columns += departments
 
 for department in departments:
     data[department] = data['DepartmentDescription'] == department
+
+
+# In[ ]:
+
+# data['LenFinelineNumber'] = data['FinelineNumber'].fillna('').apply(len)
+# feature_columns += ['LenFinelineNumber']
+
+data['FinelineNumber'] = data['FinelineNumber'].fillna('0').apply(int)
+feature_columns += ['FinelineNumber']
 
 
 # In[ ]:
