@@ -64,5 +64,5 @@ To Do:
 * Use of One-hot encoding on department and fineline number(quantile > 0.6) obtain a score of 0.82
 * Adding more fineline number (quantile > 0.1) obtain a score of 0.7
 * Adding UPC and doing feature selection (24000) then apply parameter tuning reaches a score of 0.637 
-* **One-hot encoding of categorical variables, and use as many as them **
+* **One-hot encoding of categorical variables, and use as many as them**
 * **Parameter tuning is key**
