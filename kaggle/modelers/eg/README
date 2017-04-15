@@ -3,3 +3,14 @@ Private Leaderboard: 498
 
 Public Score:  1.20958
 Public Leaderboard:  497
+
+Feature Engineering:
+- NumberItems: total rows of this visit
+- WeekdayNumber: converted Mon-Sun to integers 0-6
+- IsWeekday: if it is weekday / weekend
+- Upc: used as int
+- ScanCount, TotalScanCount: summed up ScanCount column for each visit
+- DepartmentDescription: used dummy coding
+- FinelineNumber: used as int
+
+This is done from scratch and I have not read anybody else's solution. Only used XGBoost with the features above. I am still in the process of creating more features, and have not done any parameter tuning.
