@@ -1,0 +1,7 @@
+1, feature engineering
+feature used: 'WeekdayNumber','IsWeekend','ScanCount_sum','distinct_department_count'
+2, model trained
+XGboost
+3, manipulation final result
+from Exploratory data analysis of training data, I found, if scanCount_sum=-1, trip_type=999
+manually modify the type to 999 if my model didn't give it trpe type 999
