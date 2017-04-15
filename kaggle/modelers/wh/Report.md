@@ -54,6 +54,7 @@ The features are initially tested on Random forest, since there are very limited
 * max_depth = 10
 * num_round = 300
 * **gamma = 0.925**
+
 To Do:
 * eta < 0.1
 * min_child_weight
