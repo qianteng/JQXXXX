@@ -1,2 +1,4 @@
-wget --directory-prefix=../Data https://www.dropbox.com/s/cpvtr4qpunpkcac/train.csv
-wget --directory-prefix=../Data https://www.dropbox.com/s/ze8odkdw1444e92/test.csv
+ROOT_DIR="~/GitHub/JQXXXX/kaggle/modelers/eg/quora"
+
+wget --directory-prefix=$ROOT_DIR/Data https://www.dropbox.com/s/cpvtr4qpunpkcac/train.csv
+wget --directory-prefix=$ROOT_DIR/Data https://www.dropbox.com/s/ze8odkdw1444e92/test.csv
