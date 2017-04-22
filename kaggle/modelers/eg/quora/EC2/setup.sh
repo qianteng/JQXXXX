@@ -1,4 +1,9 @@
-cp -r ./home $HOME
+git clone https://github.com/tomasr/molokai.git
+rm -rf $HOME/.vim
+mv molokai $HOME/.vim
+rm -rf molokai
+
+cp -r ./home/* $HOME
 
 ROOT_DIR=$HOME/GitHub/JQXXXX/kaggle/modelers/eg/quora
 
