@@ -14,6 +14,3 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 # '\$(__git_ps1)' adds git-related stuff
 # '\W' adds the name of the current directory
 export PS1="$purple\u$green\$(__git_ps1)$blue \W $ $reset"
-
-# added by Anaconda3 4.3.1 installer
-export PATH="/anaconda/bin:$PATH"
