@@ -1,4 +1,4 @@
-cp -r ./home/* $HOME
+cp -r ./home $HOME
 
 ROOT_DIR=$HOME/GitHub/JQXXXX/kaggle/modelers/eg/quora
 
