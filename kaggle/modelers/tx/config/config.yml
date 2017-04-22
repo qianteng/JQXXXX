@@ -1,0 +1,8 @@
+DATA_DIR: /Users/tianyixia/dev/Qishi_ML_adv/kaggle/walmart/data/
+
+
+DATA_SPLITTING:
+  use_stratified: True
+  valid_ratio: 0.1
+  shuffle: True
+

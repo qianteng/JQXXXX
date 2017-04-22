@@ -53,5 +53,7 @@ To deactivate the virtual environment, please type:
 $ deactivate
 ```
 
+## About `xgboost`
+One could choose to use `xgboost` instead of `sklearn`'s `GBT`. To install `xgboost`, please follow the instructions [here](https://xgboost.readthedocs.io/en/latest/build.html).
 
 
