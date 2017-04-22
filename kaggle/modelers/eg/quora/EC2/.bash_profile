@@ -17,5 +17,3 @@ export PS1="$purple\u$green\$(__git_ps1)$blue \W $ $reset"
 
 # added by Anaconda3 4.3.1 installer
 export PATH="/anaconda/bin:$PATH"
-
-source activate kaggle
