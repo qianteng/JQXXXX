@@ -4,6 +4,8 @@
 @brief: config for Quora project
 """
 
+import multiprocessing
+import platform
 import subprocess
 
 from utils import os_utils
@@ -36,6 +38,13 @@ TRAIN_SIZE = 404290
 if TASK == "sample":
     TRAIN_SIZE = SAMPLE_SIZE
 TEST_SIZE = 2345796
+
+
+# ------------------------ OTHER ------------------------
+PLATFORM = platform.system()
+NUM_CORES = multiprocessing.cpu_count()
+
+DATA_PROCESSOR_N_JOBS = NUM_CORES
 
 
 # ---------------------- CREATE PATH --------------------

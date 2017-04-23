@@ -20,6 +20,13 @@ def main():
 	logname = "data_process_%s.log"%now
 	logger = logging_utils._get_logger(config.LOG_DIR, logname)
 
+	columns_to_proc = [
+		"question1",
+		"question2",
+	]
+
+	print(config.PLATFORM)
+
 
 if __name__ == "__main__":
     main()
