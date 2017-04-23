@@ -6,8 +6,8 @@
 
 #-----------------------------------------------------------------------
 # prepare data
-python data_prepare.py
+python data_preparer.py
 
 #-----------------------------------------------------------------------
 # process/clean data
-python data_process.py
+python data_processor.py

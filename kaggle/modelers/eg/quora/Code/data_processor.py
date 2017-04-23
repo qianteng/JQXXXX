@@ -24,8 +24,12 @@ def main():
 		"question1",
 		"question2",
 	]
+	if config.PLATFORM == "Linux":
+		config.DATA_PROCESSOR_N_JOBS = len(columns_to_proc)
 
-	print(config.PLATFORM)
+	# clean using a list of processors
+	processors = [
+	]
 
 
 if __name__ == "__main__":
