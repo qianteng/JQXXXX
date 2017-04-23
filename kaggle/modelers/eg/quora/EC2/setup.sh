@@ -5,9 +5,12 @@ rm -rf molokai
 
 ROOT_DIR="$(git rev-parse --show-toplevel)"/kaggle/modelers/eg/quora
 
-for f in .bash_profile .gitconfig .vimrc git-completion.bash git-prompt.sh
+for f in $(ls -A)
 do
-	cp -n $ROOT_DIR/EC2/$f $HOME
+	if [ $f != setup.sh ]
+		then
+			cp -n $ROOT_DIR/EC2/$f $HOME
+	fi
 done
 
 mkdir -p $ROOT_DIR/Data
