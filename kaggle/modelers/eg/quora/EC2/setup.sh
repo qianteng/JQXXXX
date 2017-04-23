@@ -3,7 +3,7 @@ rm -rf $HOME/.vim
 mv molokai $HOME/.vim
 rm -rf molokai
 
-ROOT_DIR="$(git rev-parse --show-toplevel)"/kaggle/modelers/eg/quora
+ROOT_DIR=$(git rev-parse --show-toplevel)/kaggle/modelers/eg/quora
 
 for f in $(ls -A)
 do
