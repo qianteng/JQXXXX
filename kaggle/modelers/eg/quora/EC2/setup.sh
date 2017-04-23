@@ -13,6 +13,8 @@ do
 	fi
 done
 
+conda install numpy
+
 mkdir -p $ROOT_DIR/Data
 wget https://www.dropbox.com/s/cpvtr4qpunpkcac/train.csv -O $ROOT_DIR/Data/train.csv
 wget https://www.dropbox.com/s/ze8odkdw1444e92/test.csv -O $ROOT_DIR/Data/test.csv
