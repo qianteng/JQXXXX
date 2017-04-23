@@ -26,8 +26,8 @@ CLEAN_DATA_DIR = DATA_DIR + "/Clean"
 TRAIN_DATA = DATA_DIR + "/train.csv"
 TEST_DATA = DATA_DIR + "/test.csv"
 
-ALL_DATA_CSV = CLEAN_DATA_DIR + "/all.csv"
-ALL_DATA_UTF8 = CLEAN_DATA_DIR + "/all.utf-8.csv.pkl"
+ALL_DATA_UTF8 = CLEAN_DATA_DIR + "/all.utf-8.csv"
+ALL_DATA_RAW = CLEAN_DATA_DIR + "/all.utf-8.csv.pkl"
 
 # size
 TRAIN_SIZE = 404290

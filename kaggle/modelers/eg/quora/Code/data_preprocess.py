@@ -27,13 +27,13 @@ def main():
 	gc.collect()
 
 	# convert to utf-8
-	csv_utils._save(config.ALL_DATA_CSV, dfAll)
-	dfAll = csv_utils._load(config.ALL_DATA_CSV)
+	csv_utils._save(config.ALL_DATA_UTF8, dfAll)
+	dfAll = csv_utils._load(config.ALL_DATA_UTF8)
 
 	# save data
 	if config.TASK == "sample":
 		dfAll = dfAll.iloc[:config.SAMPLE_SIZE].copy()
-	pkl_utils._save(config.ALL_DATA_UTF8, dfAll)
+	pkl_utils._save(config.ALL_DATA_RAW, dfAll)
 
 
 if __name__ == "__main__":
