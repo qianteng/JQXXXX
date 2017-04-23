@@ -45,6 +45,7 @@ PLATFORM = platform.system()
 NUM_CORES = multiprocessing.cpu_count()
 
 DATA_PROCESSOR_N_JOBS = NUM_CORES
+AUTO_SPELLING_CHECKER_N_JOBS = NUM_CORES
 
 
 # ---------------------- CREATE PATH --------------------
