@@ -13,7 +13,12 @@ from utils import logging_utils, time_utils
 now = time_utils._timestamp()
 
 def main():
-	pass
+
+	###########
+	## Setup ##
+	###########
+	logname = "data_process_%s.log"%now
+	logger = logging_utils._get_logger(config.LOG_DIR, logname)
 
 
 if __name__ == "__main__":

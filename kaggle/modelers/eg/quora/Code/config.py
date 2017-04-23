@@ -21,6 +21,8 @@ ROOT_DIR = subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).rstr
 DATA_DIR = ROOT_DIR + "/Data"
 CLEAN_DATA_DIR = DATA_DIR + "/Clean"
 
+LOG_DIR = ROOT_DIR + "/Log"
+
 # ------------------------ DATA ------------------------
 # provided data
 TRAIN_DATA = DATA_DIR + "/train.csv"
@@ -39,5 +41,6 @@ TEST_SIZE = 2345796
 # ---------------------- CREATE PATH --------------------
 DIRS = []
 DIRS += [CLEAN_DATA_DIR]
+DIRS += [LOG_DIR]
 
 os_utils._create_dirs(DIRS)
