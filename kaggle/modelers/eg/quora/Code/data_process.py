@@ -5,7 +5,8 @@
 @brief: process data
 """
 
-from utils import time_utils
+import config
+from utils import logging_utils, time_utils
 
 
 #-------------------------- Main --------------------------
