@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-@author: Eric Guo <guoanjie@gmail.com>
 @author: Chenglong Chen <c.chenglong@gmail.com>
+@author: Eric Guo <guoanjie@gmail.com>
 @brief: process data
 """
 
