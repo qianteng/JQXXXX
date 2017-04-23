@@ -17,3 +17,8 @@ SAMPLE_SIZE = 1000
 ROOT_DIR = subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).rstrip() + '/kaggle/modelers/eg/quora'
 
 DATA_DIR = ROOT_DIR + '/Data'
+
+# ------------------------ DATA ------------------------
+# provided data
+TRAIN_DATA = DATA_DIR + '/train.csv'
+TEST_DATA = DATA_DIR + '/test.csv'
