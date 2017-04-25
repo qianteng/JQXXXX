@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 import config
-from utils import csv_utils, pkl_utils
+from utils import pkl_utils
 
 def main():
 	# load provided data
