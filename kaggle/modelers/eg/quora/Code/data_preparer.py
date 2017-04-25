@@ -28,7 +28,7 @@ def main():
 	# save data
 	if config.TASK == "sample":
 		dfAll = dfAll.iloc[:config.SAMPLE_SIZE].copy()
-	pkl_utils._save(config.ALL_DATA_RAW, dfAll)
+	pkl_utils._save(config.ALL_DATA_UTF8, dfAll)
 
 
 if __name__ == "__main__":
