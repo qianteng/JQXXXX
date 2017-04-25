@@ -13,10 +13,6 @@ def main():
 	dfTrain = pd.read_csv(config.TRAIN_DATA)
 	dfTest  = pd.read_csv(config.TEST_DATA)
 
-	# 
-	print("Train Mean: {:0.6f}".format(np.mean(dfTrain["is_duplicate"])))
-	print("Train Var:  {:0.6f}".format(np.var(dfTrain["is_duplicate"])))
-
 	#
 	dfTest["is_duplicate"] = np.zeros(config.TEST_SIZE)
 
