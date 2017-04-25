@@ -17,14 +17,13 @@ def main():
 	dfTest["is_duplicate"] = np.zeros(config.TEST_SIZE)
 
 	# concat train and test
-	dfAll = pd.concat([dfTrain, dfTest], ignore_index=True)
+	dfAll = pd.concat([dfTrain, dfTest], ignore_index=True).fillna("")
 	del dfTrain
 	del dfTest
 	gc.collect()
 
 	# convert to utf-8
-	csv_utils._save(config.ALL_DATA_UTF8, dfAll)
-	dfAll = csv_utils._load(config.ALL_DATA_UTF8)
+	dfAll[["question1", "question2"]] = dfAll[["question1", "question2"]].applymap(lambda s: unicode(s, 'utf-8'))
 
 	# save data
 	if config.TASK == "sample":
