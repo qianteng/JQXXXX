@@ -5,6 +5,7 @@
 @brief: process data
 """
 
+import nltk
 import regex
 from bs4 import BeautifulSoup
 
@@ -225,6 +226,18 @@ class QuartetCleaner(BaseReplacer):
 		]
 
 
+## lemmatizing for using pretrained word2vec model
+# 2nd solution in CrowdFlower
+class Lemmatizer:
+	def __init__(self):
+		self.Tokenizer = nltk.tokenize.TreebankWordTokenizer()
+		self.Lemmatizer = nltk.stem.wordnet.WordNetLemmatizer()
+
+	def transform(self, text):
+		tokens = [self.Lemmatizer.lemmatize(token) for token in self.Tokenizer.tokenize(text)]
+		return " ".join(tokens)
+
+
 #----------------------- Processor Wrapper -----------------------
 class ProcessorWrapper(object):
 	def __init__(self, processor):
@@ -321,6 +334,7 @@ def main():
 		UnitConverter(),
 		QuartetCleaner(),
 		HtmlCleaner(parser="html.parser"),
+		Lemmatizer(),
 	]
 
 	## simple tests
