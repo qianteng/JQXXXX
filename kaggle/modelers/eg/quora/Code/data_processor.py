@@ -5,6 +5,7 @@
 @brief: process data
 """
 
+import regex
 from pprint import pprint
 
 import config
@@ -29,6 +30,46 @@ class BaseReplacer(object):
 class UnicodeConverter(BaseReplacer):
 	def transform(self, text):
 		return unicode(text, 'utf-8')
+
+
+## deal with case
+class LowerCaseConverter(BaseReplacer):
+	"""
+	Traditional -> traditional
+	"""
+	def transform(self, text):
+		return text.lower()
+
+
+## deal with unit
+class UnitConverter(BaseReplacer):
+	"""
+	shadeMature height: 36 in. - 48 in.Mature width
+	PUT one UnitConverter before LowerUpperCaseSplitter
+	"""
+	def __init__self():
+		self.pattern_replace_pair_list = [
+			(r"([0-9]+)( *)(inches|inch|in|in.|')\.?", r"\1 in. "),
+			(r"([0-9]+)( *)(pounds|pound|lbs|lb|lb.)\.?", r"\1 lb. "),
+			(r"([0-9]+)( *)(foot|feet|ft|ft.|'')\.?", r"\1 ft. "),
+			(r"([0-9]+)( *)(square|sq|sq.) ?\.?(inches|inch|in|in.|')\.?", r"\1 sq.in. "),
+			(r"([0-9]+)( *)(square|sq|sq.) ?\.?(feet|foot|ft|ft.|'')\.?", r"\1 sq.ft. "),
+			(r"([0-9]+)( *)(cubic|cu|cu.) ?\.?(inches|inch|in|in.|')\.?", r"\1 cu.in. "),
+			(r"([0-9]+)( *)(cubic|cu|cu.) ?\.?(feet|foot|ft|ft.|'')\.?", r"\1 cu.ft. "),
+			(r"([0-9]+)( *)(gallons|gallon|gal)\.?", r"\1 gal. "),
+			(r"([0-9]+)( *)(ounces|ounce|oz)\.?", r"\1 oz. "),
+			(r"([0-9]+)( *)(centimeters|cm)\.?", r"\1 cm. "),
+			(r"([0-9]+)( *)(milimeters|mm)\.?", r"\1 mm. "),
+			(r"([0-9]+)( *)(minutes|minute)\.?", r"\1 min. "),
+			(r"([0-9]+)( *)(°|degrees|degree)\.?", r"\1 deg. "),
+			(r"([0-9]+)( *)(v|volts|volt)\.?", r"\1 volt. "),
+			(r"([0-9]+)( *)(wattage|watts|watt)\.?", r"\1 watt. "),
+			(r"([0-9]+)( *)(amperes|ampere|amps|amp)\.?", r"\1 amp. "),
+			(r"([0-9]+)( *)(qquart|quart)\.?", r"\1 qt. "),
+			(r"([0-9]+)( *)(hours|hour|hrs.)\.?", r"\1 hr "),
+			(r"([0-9]+)( *)(gallons per minute|gallon per minute|gal per minute|gallons/min.|gallons/min)\.?", r"\1 gal. per min. "),
+			(r"([0-9]+)( *)(gallons per hour|gallon per hour|gal per hour|gallons/hour|gallons/hr)\.?", r"\1 gal. per hr "),
+		]
 
 
 #----------------------- Processor Wrapper -----------------------
@@ -87,6 +128,8 @@ def main():
 	# clean using a list of processors
 	processors = [
 		UnicodeConverter(),
+		LowerCaseConverter(),
+		UnitConverter(),
 	]
 
 	## simple tests
