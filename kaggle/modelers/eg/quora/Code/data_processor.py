@@ -40,6 +40,31 @@ class LowerCaseConverter(BaseReplacer):
 		return text.lower()
 
 
+class LowerUpperCaseSplitter(BaseReplacer):
+	"""
+	homeBASICS Traditional Real Wood -> homeBASICS Traditional Real Wood
+
+	hidden from viewDurable rich finishLimited lifetime warrantyEncapsulated panels ->
+	hidden from view Durable rich finish limited lifetime warranty Encapsulated panels
+
+	Dickies quality has been built into every product.Excellent visibilityDurable ->
+	Dickies quality has been built into every product Excellent visibility Durable
+
+	BAD CASE:
+	shadeMature height: 36 in. - 48 in.Mature width
+	minutesCovers up to 120 sq. ft.Cleans up
+	PUT one UnitConverter before LowerUpperCaseSplitter
+
+	Reference:
+	https://www.kaggle.com/c/home-depot-product-search-relevance/forums/t/18472/typos-in-the-product-descriptions
+	"""
+	def __init__(self):
+		self.pattern_replace_pair_list = [
+			(r"(\w)[\.?!]([A-Z])", r"\1 \2"),
+			(r"(?<=( ))([a-z]+)([A-Z]+)", r"\2 \3"),
+		]
+
+
 ## deal with unit
 class UnitConverter(BaseReplacer):
 	"""
@@ -158,6 +183,7 @@ def main():
 		UnicodeConverter(),
 		LowerCaseConverter(),
 		UnitConverter(),
+		LowerUpperCaseSplitter(),
 	]
 
 	## simple tests
