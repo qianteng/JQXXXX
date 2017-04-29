@@ -129,6 +129,36 @@ class DigitLetterSplitter(BaseReplacer):
 		]
 
 
+class DigitCommaDigitMerger(BaseReplacer):
+	"""
+	1,000,000 -> 1000000
+	"""
+	def __init__(self):
+		self.pattern_replace_pair_list = [
+			(r"(?<=\d+),(?=000)", r""),
+		]
+
+
+class NumberDigitMapper(BaseReplacer):
+	"""
+	one -> 1
+	one -> 2
+	"""
+	def __init__(self):
+		numbers = [
+			"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+			"eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen",
+			"nineteen", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"
+		]
+		digits = [
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+			16, 17, 18, 19, 20, 30, 40, 50, 60, 70, 80, 90
+		]
+		self.pattern_replace_pair_list = [
+			(r"(?<=\W|^)%s(?=\W|$)"%n, str(d)) for n,d in zip(numbers, digits)
+		]
+
+
 ## deal with unit
 class UnitConverter(BaseReplacer):
 	"""
@@ -251,6 +281,8 @@ def main():
 		# WordReplacer(replace_fname=config.WORD_REPLACER_DATA),
 		LetterLetterSplitter(),
 		DigitLetterSplitter(),
+		DigitCommaDigitMerger(),
+		NumberDigitMapper(),
 	]
 
 	## simple tests
