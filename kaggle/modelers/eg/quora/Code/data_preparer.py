@@ -22,13 +22,10 @@ def main():
 	del dfTest
 	gc.collect()
 
-	# convert to utf-8
-	dfAll[["question1", "question2"]] = dfAll[["question1", "question2"]].applymap(lambda s: unicode(s, 'utf-8'))
-
 	# save data
 	if config.TASK == "sample":
 		dfAll = dfAll.iloc[:config.SAMPLE_SIZE].copy()
-	pkl_utils._save(config.ALL_DATA_UTF8, dfAll)
+	pkl_utils._save(config.ALL_DATA_RAW, dfAll)
 
 
 if __name__ == "__main__":
