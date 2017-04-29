@@ -6,6 +6,7 @@
 """
 
 import regex
+from bs4 import BeautifulSoup
 
 import config
 from utils import logging_utils, pkl_utils, time_utils
@@ -190,6 +191,40 @@ class UnitConverter(BaseReplacer):
 		]
 
 
+## deal with html tags
+class HtmlCleaner:
+	def __init__(self, parser):
+		self.parser = parser
+
+	def transform(self, text):
+		bs = BeautifulSoup(text, self.parser)
+		text = bs.get_text(separator=" ")
+		return text
+
+
+## deal with some special characters
+# 3rd solution in CrowdFlower (cleanData_02.R)  
+class QuartetCleaner(BaseReplacer):
+	def __init__(self):
+		self.pattern_replace_pair_list = [
+			(r"<.+?>", r""),
+			# html codes
+			(r"&nbsp;", r" "),
+			(r"&amp;", r"&"),
+			(r"&#39;", r"'"),
+			(r"/>/Agt/>", r""),
+			(r"</a<gt/", r""),
+			(r"gt/>", r""),
+			(r"/>", r""),
+			(r"<br", r""),
+			# do not remove [".", "/", "-", "%"] as they are useful in numbers, e.g., 1.97, 1-1/2, 10%, etc.
+			(r"[ &<>)(_,;:!?\+^~@#\$]+", r" "),
+			("'s\\b", r""),
+			(r"[']+", r""),
+			(r"[\"]+", r""),
+		]
+
+
 #----------------------- Processor Wrapper -----------------------
 class ProcessorWrapper(object):
 	def __init__(self, processor):
@@ -283,6 +318,9 @@ def main():
 		DigitLetterSplitter(),
 		DigitCommaDigitMerger(),
 		NumberDigitMapper(),
+		UnitConverter(),
+		QuartetCleaner(),
+		HtmlCleaner(parser="html.parser"),
 	]
 
 	## simple tests
