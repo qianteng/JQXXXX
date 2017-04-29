@@ -11,6 +11,26 @@ import config
 from utils import logging_utils, time_utils
 
 
+#--------------------------- Processor ---------------------------
+## base class
+## Most of the processings can be casted into the "pattern-replace" framework
+class BaseReplacer(object):
+	def __init__(self, pattern_replace_pair_list=[]):
+		self.pattern_replace_pair_list = pattern_replace_pair_list
+	def transform(self, text):
+		for pattern, replace in self.pattern_replace_pair_list:
+			try:
+				text = regex.sub(pattern, replace, text)
+			except:
+				pass
+		return regex.sub(r"\s+", " ", text).strip()
+
+
+class UnicodeConverter(BaseReplacer):
+	def transform(self, text):
+		return unicode(text, 'utf-8')
+
+
 #----------------------- Processor Wrapper -----------------------
 class ProcessorWrapper(object):
 	def __init__(self, processor):
@@ -66,6 +86,7 @@ def main():
 
 	# clean using a list of processors
 	processors = [
+		UnicodeConverter(),
 	]
 
 	## simple tests
@@ -75,11 +96,21 @@ def main():
 		"Emoticons: What does “:/” mean?",
 		"What will be the impact of scrapping of ₹500 and ₹1000 rupee notes on the real estate market?",
 		"Why does Quora mark my questions as needing improvement/clarification before I have time to give it details? Literally within seconds…",
-		"How can I ask a question without getting marked as ‘need to improve’?",
 		"When travelling to a new region is it better to immerse yourself in 1–2 cities or to see as many cities as you can cram in?",
 		"जिस स्थान का आपने भ्रमण किया है उसपर 50-60 शब्दों में प्रतिवेदन लिखिए?",
+		"How long will it take to heat 750kg of water by 10°C with a 2060W heater?",
+		"How list showing the month and a number for each month . ☝January 713 ☝February 823 ☝March 531 ☝ April 542 ☝May 351 ☝June 462 ☝July 471 ☝ August 683 ⚡Decode the logic and find the number for September = ? iska answer dena?",
+		"What does ℝ² mean?",
+		r"How can I calculate the value of [math]\displaystyle\lim_{x\to ∞} \frac{5^{x+1}+7^{x+1}}{5^x-7^x}[/math] ?",
 	]
-	pprint(text)
+	list_processor = ListProcessor(processors)
+	processed = list_processor.process(text)
+	for original, after in zip(text, processed):
+		print
+		print "Original:"
+		print original
+		print "After:"
+		print after
 
 
 if __name__ == "__main__":
