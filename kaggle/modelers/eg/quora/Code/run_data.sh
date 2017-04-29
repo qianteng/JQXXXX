@@ -10,4 +10,4 @@ python data_preparer.py
 
 #-----------------------------------------------------------------------
 # process/clean data
-# python data_processor.py
+python data_processor.py

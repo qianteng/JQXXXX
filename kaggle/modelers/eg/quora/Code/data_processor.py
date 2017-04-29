@@ -9,6 +9,41 @@ import config
 from utils import logging_utils, time_utils
 
 
+#----------------------- Processor Wrapper -----------------------
+class ProcessorWrapper(object):
+	def __init__(self, processor):
+		self.processor = processor
+
+	def transform(self, input):
+		if isinstance(input, str) or isinstance(input, unicode):
+			out = self.processor.transform(input)
+		elif isinstance(input, float) or isinstance(input, int):
+			out = self.processor.transform(str(input))
+		elif isinstance(input, list):
+			# take care when the input is a list
+			out = [0] * len(input)
+			for i in range(len(input)):
+				out[i] = ProcessorWrapper(self.processor).transform(input[i])
+		else:
+			raise(ValueError("Currently not support type: {}".format(type(input).__name__)))
+		return out
+
+
+#------------------- List/DataFrame Processor Wrapper -------------------
+class ListProcessor(object):
+	"""
+	WARNING: This class will operate on the original input list itself
+	"""
+	def __init__(self, processors):
+		self.processors = processors
+
+	def process(self, lst):
+		for i in range(len(lst)):
+			for processor in self.processors:
+				lst[i] = ProcessorWrapper(processor).transform(lst[i])
+		return lst
+
+
 #-------------------------- Main --------------------------
 now = time_utils._timestamp()
 
