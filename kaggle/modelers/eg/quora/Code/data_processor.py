@@ -6,10 +6,9 @@
 """
 
 import regex
-from pprint import pprint
 
 import config
-from utils import logging_utils, time_utils
+from utils import logging_utils, pkl_utils, time_utils
 
 
 #--------------------------- Processor ---------------------------
@@ -107,6 +106,35 @@ class ListProcessor(object):
 		return lst
 
 
+class DataFrameProcessor(object):
+	"""
+	WARNING: This class will operate on the original input dataframe itself
+	"""
+	def __init__(self, processors):
+		self.processors = processors
+
+	def process(self, df):
+		for processor in self.processors:
+			df = df.apply(ProcessorWrapper(processor).transform)
+		return df
+
+
+class DataFrameParallelProcessor(object):
+	"""
+	WARNING: This class will operate on the original input dataframe itself
+	https://stackoverflow.com/questions/26520781/multiprocessing-pool-whats-the-difference-between-map-async-and-imap
+	"""
+	def __init__(self, processors, n_jobs=4):
+		self.processors = processors
+		self.n_jobs = n_jobs
+
+	def process(self, dfAll, columns):
+		df_processor = DataFrameProcessor(self.processors)
+		for col in columns:
+			dfAll[col] = df_processor.process(dfAll[col])
+		return dfAll
+
+
 #-------------------------- Main --------------------------
 now = time_utils._timestamp()
 
@@ -139,10 +167,8 @@ def main():
 		"Emoticons: What does “:/” mean?",
 		"What will be the impact of scrapping of ₹500 and ₹1000 rupee notes on the real estate market?",
 		"Why does Quora mark my questions as needing improvement/clarification before I have time to give it details? Literally within seconds…",
-		"When travelling to a new region is it better to immerse yourself in 1–2 cities or to see as many cities as you can cram in?",
 		"जिस स्थान का आपने भ्रमण किया है उसपर 50-60 शब्दों में प्रतिवेदन लिखिए?",
 		"How long will it take to heat 750kg of water by 10°C with a 2060W heater?",
-		"How list showing the month and a number for each month . ☝January 713 ☝February 823 ☝March 531 ☝ April 542 ☝May 351 ☝June 462 ☝July 471 ☝ August 683 ⚡Decode the logic and find the number for September = ? iska answer dena?",
 		"What does ℝ² mean?",
 		r"How can I calculate the value of [math]\displaystyle\lim_{x\to ∞} \frac{5^{x+1}+7^{x+1}}{5^x-7^x}[/math] ?",
 	]
@@ -154,6 +180,22 @@ def main():
 		print original
 		print "After:"
 		print after
+
+	#############
+	## Process ##
+	#############
+	## load raw data
+	dfAll = pkl_utils._load(config.ALL_DATA_RAW)
+	columns_to_proc = [col for col in columns_to_proc if col in dfAll.columns]
+
+	## clean uisng a list of processors
+	df_processor = DataFrameParallelProcessor(processors, config.DATA_PROCESSOR_N_JOBS)
+	df_processor.process(dfAll, columns_to_proc)
+	if config.TASK == "sample":
+		print dfAll[columns_to_proc]
+	# save data
+	logger.info("Save to {}".format(config.ALL_DATA_LEMMATIZED))
+	pkl_utils._save(config.ALL_DATA_LEMMATIZED, dfAll)
 
 
 if __name__ == "__main__":
