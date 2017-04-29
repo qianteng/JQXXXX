@@ -65,6 +65,70 @@ class LowerUpperCaseSplitter(BaseReplacer):
 		]
 
 
+## deal with word replacement
+# 1st solution in CrowdFlower
+class WordReplacer(BaseReplacer):
+	def __init__(self, replace_fname):
+		self.replace_fname = replace_fname
+		self.pattern_replace_pair_list = []
+		for line in csv.reader(open(self.replace_fname)):
+			if len(line) == 1 and line[0].startswith("#"):
+				continue
+			try:
+				pattern = r"(?<=\W|^)%s(?=\W|$)"%line[0]
+				replace = line[1]
+				self.pattern_replace_pair_list.append( (pattern, replace) )
+			except:
+				print(line)
+				pass
+
+
+## deal with letters
+class LetterLetterSplitter(BaseReplacer):
+	"""
+	For letter and letter
+	/:
+	Cleaner/Conditioner -> Cleaner Conditioner
+
+	-:
+	Vinyl-Leather-Rubber -> Vinyl Leather Rubber
+
+	For digit and digit, we keep it as we will generate some features via math operations,
+	such as approximate height/width/area etc.
+	/:
+	3/4 -> 3/4
+
+	-:
+	1-1/4 -> 1-1/4
+	"""
+	def __init__(self):
+		self.pattern_replace_pair_list = [
+			(r"([a-zA-Z]+)[/\-]([a-zA-Z]+)", r"\1 \2"),
+		]
+
+
+## deal with digits and numbers
+class DigitLetterSplitter(BaseReplacer):
+	"""
+	x:
+	1x1x1x1x1 -> 1 x 1 x 1 x 1 x 1
+	19.875x31.5x1 -> 19.875 x 31.5 x 1
+
+	-:
+	1-Gang -> 1 Gang
+	48-Light -> 48 Light
+
+	.:
+	includes a tile flange to further simplify installation.60 in. L x 36 in. W x 20 in. ->
+	includes a tile flange to further simplify installation. 60 in. L x 36 in. W x 20 in.
+	"""
+	def __init__(self):
+		self.pattern_replace_pair_list = [
+			(r"(\d+)[\.\-]*([a-zA-Z]+)", r"\1 \2"),
+			(r"([a-zA-Z]+)[\.\-]*(\d+)", r"\1 \2"),
+		]
+
+
 ## deal with unit
 class UnitConverter(BaseReplacer):
 	"""
@@ -184,6 +248,9 @@ def main():
 		LowerCaseConverter(),
 		UnitConverter(),
 		LowerUpperCaseSplitter(),
+		# WordReplacer(replace_fname=config.WORD_REPLACER_DATA),
+		LetterLetterSplitter(),
+		DigitLetterSplitter(),
 	]
 
 	## simple tests
