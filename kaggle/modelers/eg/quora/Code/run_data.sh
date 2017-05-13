@@ -28,3 +28,10 @@ python feature_distance.py edit &
 #-----------------------------------------------------------------------
 # generate first and last ngram features
 python feature_first_last_ngram.py &
+
+
+#-----------------------------------------------------------------------
+# generate intersect features
+python feature_intersect_count.py &
+
+python feature_intersect_position.py &
