@@ -23,6 +23,9 @@ ROOT_DIR = subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).rstr
 DATA_DIR = ROOT_DIR + "/Data"
 CLEAN_DATA_DIR = DATA_DIR + "/Clean"
 
+FEAT_DIR = ROOT_DIR + "/Feat"
+FEAT_FILE_SUFFIX = ".pkl"
+
 LOG_DIR = ROOT_DIR + "/Log"
 
 # ------------------------ DATA ------------------------
