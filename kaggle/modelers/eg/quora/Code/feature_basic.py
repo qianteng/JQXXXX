@@ -12,7 +12,7 @@ from collections import Counter
 import numpy as np
 
 import config
-from utils import nlp_utils, np_utils
+from utils import ngram_utils, nlp_utils, np_utils
 from utils import time_utils, logging_utils, pkl_utils
 from feature_base import BaseEstimator, StandaloneFeatureWrapper
 
@@ -104,6 +104,21 @@ class DigitRatio(BaseEstimator):
 		return np_utils._try_divide(len(re.findall(r"\d", obs)), len(obs_tokens))
 
 
+class UniqueCount_Ngram(BaseEstimator):
+	def __init__(self, obs_corpus, target_corpus, ngram, aggregation_mode=""):
+		super(UniqueCount_Ngram, self).__init__(obs_corpus, targt_corpus, aggregation_mode)
+		self.ngram = ngram
+		self.ngram_str = ngram_utils._ngram_str_map[self.ngram]
+
+	def __name__(self):
+		return "UniqueCount_{}".format(self.ngram_str)
+
+	def transform_one(self, obs, target, id):
+		obs_tokens = nlp_utils._tokenize(obs, token_pattern)
+		obs_ngrams = ngram_utils._ngrams(obs_tokens, self.ngram)
+		return len(sort(obs_ngrams))
+
+
 #---------------- Main ---------------------------
 def main():
 	logname = "generate_feature_basic_%s.log"%time_utils._timestamp()
@@ -117,6 +132,16 @@ def main():
 		param_list = []
 		sf = StandaloneFeatureWrapper(generator, dfAll, obs_fields, param_list, config.FEAT_DIR, logger)
 		sf.go()
+
+	## unique count
+	generators = []
+	obs_fields = ["question1", "question2"]
+	ngrams = [1,2,3]
+	for generator in generators:
+		for ngram in ngrams:
+			param_list = [ngram]
+			sf = StandaloneFeatureWrapper(generator, dfAll, obs_fields, param_list, config.FEAT_DIR, logger)
+			sf.go()
 
 
 if __name__ == "__main__":
