@@ -23,3 +23,8 @@ python feature_basic.py &
 python feature_distance.py jaccard &
 
 python feature_distance.py edit &
+
+
+#-----------------------------------------------------------------------
+# generate first and last ngram features
+python feature_first_last_ngram.py &
