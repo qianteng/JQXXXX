@@ -11,3 +11,8 @@ python data_preparer.py
 #-----------------------------------------------------------------------
 # process/clean data
 python data_processor.py
+
+
+#-----------------------------------------------------------------------
+# generate basic features
+python feature_basic.py &
