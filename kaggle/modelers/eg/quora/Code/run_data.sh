@@ -35,3 +35,8 @@ python feature_first_last_ngram.py &
 python feature_intersect_count.py &
 
 python feature_intersect_position.py &
+
+
+#-----------------------------------------------------------------------
+# generate match features
+python feature_match.py &
