@@ -32,6 +32,7 @@ TEST_DATA = DATA_DIR + "/test.csv"
 
 ALL_DATA_RAW = CLEAN_DATA_DIR + "/all.csv.pkl"
 ALL_DATA_LEMMATIZED = CLEAN_DATA_DIR + "/all.lemmatized.csv.pkl"
+ALL_DATA_LEMMATIZED_STEMMED = CLEAN_DATA_DIR + "/all.lemmatized.stemmed.csv.pkl"
 
 # size
 TRAIN_SIZE = 404290

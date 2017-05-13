@@ -238,6 +238,20 @@ class Lemmatizer:
 		return " ".join(tokens)
 
 
+## stemming
+class Stemmer:
+	def __init__(self, stemmer_type="snowball"):
+		self.stemmer_type = stemmer_type
+		if self.stemmer_type == "porter":
+			self.stemmer = nltk.stem.PorterStemmer()
+		elif self.stemmer_type == "snowball":
+			self.stemmer = nltk.stem.SnowballStemmer("english")
+
+	def transform(self, text):
+		tokens = [self.stemmer.stem(token) for token in text.split(" ")]
+		return " ".join(tokens)
+
+
 #----------------------- Processor Wrapper -----------------------
 class ProcessorWrapper(object):
 	def __init__(self, processor):
@@ -336,6 +350,10 @@ def main():
 		HtmlCleaner(parser="html.parser"),
 		Lemmatizer(),
 	]
+	stemmers = [
+		Stemmer(stemmer_type="snowball"),
+		Stemmer(stemmer_type="porter"),
+	][:1]
 
 	## simple tests
 	text = [
@@ -373,6 +391,13 @@ def main():
 	# save data
 	logger.info("Save to {}".format(config.ALL_DATA_LEMMATIZED))
 	pkl_utils._save(config.ALL_DATA_LEMMATIZED, dfAll)
+
+
+	## clean using stemmers
+	df_processor = DataFrameParallelProcessor(stemmers, config.DATA_PROCESSOR_N_JOBS)
+	df_processor.process(dfAll, columns_to_proc)
+	logger.info("Save to {}".format(config.ALL_DATA_LEMMATIZED_STEMMED))
+	pkl_utils._save(config.ALL_DATA_LEMMATIZED_STEMMED, dfAll)
 
 
 if __name__ == "__main__":
