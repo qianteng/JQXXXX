@@ -16,3 +16,10 @@ python data_processor.py
 #-----------------------------------------------------------------------
 # generate basic features
 python feature_basic.py &
+
+
+#-----------------------------------------------------------------------
+# generate distance features
+python feature_distance.py jaccard &
+
+python feature_distance.py edit &
