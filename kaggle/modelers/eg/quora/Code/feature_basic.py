@@ -6,6 +6,8 @@
 
 """
 
+from collections import Counter
+
 import config
 from utils import nlp_utils
 from utils import time_utils, logging_utils, pkl_utils
@@ -46,6 +48,19 @@ class DocLen(BaseEstimator):
 		return len(obs_tokens)
 
 
+class DocFreq(BaseEstimator):
+	"""Frequency of the document in the corpus"""
+	def __init__(self, obs_corpus, target_corpus, aggregation_mode=""):
+		super(DocFreq, self).__init__(obs_corpus, target_corpus, aggregation_mode)
+		self.counter = Counter(obs_corpus)
+
+	def __name__(self):
+		return "DocFreq"
+
+	def transform_one(self, obs, target, id):
+		return self.counter[obs]
+
+
 #---------------- Main ---------------------------
 def main():
 	logname = "generate_feature_basic_%s.log"%time_utils._timestamp()
@@ -53,7 +68,7 @@ def main():
 	dfAll = pkl_utils._load(config.ALL_DATA_LEMMATIZED_STEMMED)
 
 	## basic
-	generators = [DocId, DocLen]
+	generators = [DocId, DocLen, DocFreq]
 	obs_fields = ["question1", "question2"]
 	for generator in generators:
 		param_list = []
