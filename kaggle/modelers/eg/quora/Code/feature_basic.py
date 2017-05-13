@@ -8,8 +8,10 @@
 
 from collections import Counter
 
+import numpy as np
+
 import config
-from utils import nlp_utils
+from utils import nlp_utils, np_utils
 from utils import time_utils, logging_utils, pkl_utils
 from feature_base import BaseEstimator, StandaloneFeatureWrapper
 
@@ -61,6 +63,22 @@ class DocFreq(BaseEstimator):
 		return self.counter[obs]
 
 
+class DocEntropy(BaseEstimator):
+	"""Entropy of the document"""
+	def __init__(self, obs_corpus, target_corpus, aggregation_mode=""):
+		super(DocEntropy, self).__init__(obs_corpus, target_corpus, aggregation_mode)
+
+	def __name__(self):
+		return "DocEntropy"
+
+	def transform_one(self, obs, target, id):
+		obs_tokens = nlp_utils._tokenize(obs, token_pattern)
+		counter = Counter(obs_tokens)
+		count = np.asarray(list(counter.values()))
+		proba = count/np.sum(count).astype(float)
+		return np_utils._entropy(proba)
+
+
 #---------------- Main ---------------------------
 def main():
 	logname = "generate_feature_basic_%s.log"%time_utils._timestamp()
@@ -68,7 +86,7 @@ def main():
 	dfAll = pkl_utils._load(config.ALL_DATA_LEMMATIZED_STEMMED)
 
 	## basic
-	generators = [DocId, DocLen, DocFreq]
+	generators = [DocId, DocLen, DocFreq, DocEntropy]
 	obs_fields = ["question1", "question2"]
 	for generator in generators:
 		param_list = []
