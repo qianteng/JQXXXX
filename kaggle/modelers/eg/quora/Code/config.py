@@ -44,6 +44,11 @@ if TASK == "sample":
 TEST_SIZE = 2345796
 
 
+# ------------------------ PARAM ------------------------
+# intersect count/match
+STR_MATCH_THRESHOLD = 0.85
+
+
 # ------------------------ OTHER ------------------------
 PLATFORM = platform.system()
 NUM_CORES = multiprocessing.cpu_count()
