@@ -106,7 +106,7 @@ class DigitRatio(BaseEstimator):
 
 class UniqueCount_Ngram(BaseEstimator):
 	def __init__(self, obs_corpus, target_corpus, ngram, aggregation_mode=""):
-		super(UniqueCount_Ngram, self).__init__(obs_corpus, targt_corpus, aggregation_mode)
+		super(UniqueCount_Ngram, self).__init__(obs_corpus, target_corpus, aggregation_mode)
 		self.ngram = ngram
 		self.ngram_str = ngram_utils._ngram_str_map[self.ngram]
 
@@ -116,7 +116,7 @@ class UniqueCount_Ngram(BaseEstimator):
 	def transform_one(self, obs, target, id):
 		obs_tokens = nlp_utils._tokenize(obs, token_pattern)
 		obs_ngrams = ngram_utils._ngrams(obs_tokens, self.ngram)
-		return len(sort(obs_ngrams))
+		return len(set(obs_ngrams))
 
 
 #---------------- Main ---------------------------
@@ -134,7 +134,7 @@ def main():
 		sf.go()
 
 	## unique count
-	generators = []
+	generators = [UniqueCount_Ngram]
 	obs_fields = ["question1", "question2"]
 	ngrams = [1,2,3]
 	for generator in generators:
