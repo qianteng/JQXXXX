@@ -92,6 +92,18 @@ class DigitCount(BaseEstimator):
 		return len(re.findall(r"\d", obs))
 
 
+class DigitRatio(BaseEstimator):
+	def __init__(self, obs_corpus, target_corpus, aggregation_mode=""):
+		super(DigitRatio, self).__init__(obs_corpus, target_corpus, aggregation_mode)
+
+	def __name__(self):
+		return "DigitRatio"
+
+	def transform_one(self, obs, target, id):
+		obs_tokens = nlp_utils._tokenize(obs, token_pattern)
+		return np_utils._try_divide(len(re.findall(r"\d", obs)), len(obs_tokens))
+
+
 #---------------- Main ---------------------------
 def main():
 	logname = "generate_feature_basic_%s.log"%time_utils._timestamp()
@@ -99,7 +111,7 @@ def main():
 	dfAll = pkl_utils._load(config.ALL_DATA_LEMMATIZED_STEMMED)
 
 	## basic
-	generators = [DocId, DocLen, DocFreq, DocEntropy, DigitCount]
+	generators = [DocId, DocLen, DocFreq, DocEntropy, DigitCount, DigitRatio]
 	obs_fields = ["question1", "question2"]
 	for generator in generators:
 		param_list = []
