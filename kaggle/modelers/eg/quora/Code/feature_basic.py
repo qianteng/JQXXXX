@@ -119,6 +119,21 @@ class UniqueCount_Ngram(BaseEstimator):
 		return len(set(obs_ngrams))
 
 
+class UniqueRatio_Ngram(BaseEstimator):
+	def __init__(self, obs_corpus, target_corpus, ngram, aggregation_mode=""):
+		super(UniqueRatio_Ngram, self).__init__(obs_corpus, target_corpus, aggregation_mode)
+		self.ngram = ngram
+		self.ngram_str = ngram_utils._ngram_str_map[self.ngram]
+
+	def __name__(self):
+		return "UniqueRatio_{}".format(self.ngram_str)
+
+	def transform_one(self, obs, target, id):
+		obs_tokens = nlp_utils._tokenize(obs, token_pattern)
+		obs_ngrams = ngram_utils._ngrams(obs_tokens, self.ngram)
+		return np_utils._try_divide(len(set(obs_ngrams)), len(obs_ngrams))
+
+
 #---------------- Main ---------------------------
 def main():
 	logname = "generate_feature_basic_%s.log"%time_utils._timestamp()
@@ -134,7 +149,7 @@ def main():
 		sf.go()
 
 	## unique count
-	generators = [UniqueCount_Ngram]
+	generators = [UniqueCount_Ngram, UniqueRatio_Ngram]
 	obs_fields = ["question1", "question2"]
 	ngrams = [1,2,3]
 	for generator in generators:
