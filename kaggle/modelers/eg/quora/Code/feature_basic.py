@@ -6,6 +6,7 @@
 
 """
 
+import re
 from collections import Counter
 
 import numpy as np
@@ -79,6 +80,18 @@ class DocEntropy(BaseEstimator):
 		return np_utils._entropy(proba)
 
 
+class DigitCount(BaseEstimator):
+	"""Count of digit in the document"""
+	def __init__(self, obs_corpus, target_corpus, aggregation_mode=""):
+		super(DigitCount, self).__init__(obs_corpus, target_corpus, aggregation_mode)
+
+	def __name__(self):
+		return "DigitCount"
+
+	def transform_one(self, obs, target, id):
+		return len(re.findall(r"\d", obs))
+
+
 #---------------- Main ---------------------------
 def main():
 	logname = "generate_feature_basic_%s.log"%time_utils._timestamp()
@@ -86,7 +99,7 @@ def main():
 	dfAll = pkl_utils._load(config.ALL_DATA_LEMMATIZED_STEMMED)
 
 	## basic
-	generators = [DocId, DocLen, DocFreq, DocEntropy]
+	generators = [DocId, DocLen, DocFreq, DocEntropy, DigitCount]
 	obs_fields = ["question1", "question2"]
 	for generator in generators:
 		param_list = []
