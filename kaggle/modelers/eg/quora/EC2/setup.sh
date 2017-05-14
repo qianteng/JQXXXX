@@ -17,6 +17,8 @@ cp $ROOT_DIR/EC2/.vimrc $HOME
 conda install -y numpy
 pip install regex
 
+python -c "import nltk; nltk.download('all')"
+
 mkdir -p $ROOT_DIR/Data
 cd $ROOT_DIR/Data
 wget -nc https://www.dropbox.com/s/cpvtr4qpunpkcac/train.csv
