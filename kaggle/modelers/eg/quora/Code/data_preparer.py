@@ -1,4 +1,9 @@
-from __future__ import print_function
+# -*- coding: utf-8 -*-
+"""
+@author: Eric Guo <guoanjie@gmail.com>
+@brief: generate raw dataframe data
+
+"""
 
 import gc
 
