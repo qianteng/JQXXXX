@@ -40,3 +40,12 @@ python feature_intersect_position.py &
 #-----------------------------------------------------------------------
 # generate match features
 python feature_match.py &
+
+
+#-----------------------------------------------------------------------
+# generate statistical cooccurrence (weighted) features
+python feature_stat_cooc_tfidf.py tf &
+
+python feature_stat_cooc_tfidf.py tfidf &
+
+python feature_stat_cooc_tfidf.py bm25 &

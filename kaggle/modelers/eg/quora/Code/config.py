@@ -48,6 +48,10 @@ TEST_SIZE = 2345796
 # intersect count/match
 STR_MATCH_THRESHOLD = 0.85
 
+# bm25
+BM25_K1 = 1.6
+BM25_B = 0.75
+
 
 # ------------------------ OTHER ------------------------
 PLATFORM = platform.system()
