@@ -28,6 +28,11 @@ FEAT_FILE_SUFFIX = ".pkl"
 
 LOG_DIR = ROOT_DIR + "/Log"
 
+# word2vec/doc2vec/glove
+WORD2VEC_MODEL_DIR = DATA_DIR + "/word2vec"
+GLOVE_WORD2VEC_MODEL_DIR = DATA_DIR + "/glove/gensim"
+# DOC2VEC_MODEL_DIR = "%s/doc2vec"%DATA_DIR
+
 # ------------------------ DATA ------------------------
 # provided data
 TRAIN_DATA = DATA_DIR + "/train.csv"
@@ -51,6 +56,10 @@ STR_MATCH_THRESHOLD = 0.85
 # bm25
 BM25_K1 = 1.6
 BM25_B = 0.75
+
+# missing value
+# MISSING_VALUE_STRING = "MISSINGVALUE"
+MISSING_VALUE_NUMERIC = -1.
 
 
 # ------------------------ OTHER ------------------------
