@@ -14,7 +14,7 @@ cp $ROOT_DIR/EC2/.vimrc $HOME
 # 	fi
 # done
 
-conda install -y gensim
+conda install -y gensim=0
 conda install -y numpy
 pip install regex
 
