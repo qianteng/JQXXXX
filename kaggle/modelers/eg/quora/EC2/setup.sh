@@ -25,7 +25,7 @@ wget -nc https://www.dropbox.com/s/ze8odkdw1444e92/test.csv
 mkdir -p $ROOT_DIR/Data/word2vec
 cd $ROOT_DIR/Data/word2vec
 wget -nc https://www.dropbox.com/s/k9fp6t75fdmbt3q/GoogleNews-vectors-negative300.bin.gz
-gunzip GoogleNews-vectors-negative300.bin.gz
+gunzip -k GoogleNews-vectors-negative300.bin.gz
 
 mkdir -p $ROOT_DIR/Data/glove/gensim
 cd $ROOT_DIR/Data/glove/gensim
