@@ -49,3 +49,10 @@ python feature_stat_cooc_tfidf.py tf &
 python feature_stat_cooc_tfidf.py tfidf &
 
 python feature_stat_cooc_tfidf.py bm25 &
+
+
+#-----------------------------------------------------------------------
+# generate word2vec features using pre-trained word2vec model
+python feature_word2vec.py google &
+
+python feature_word2vec.py wikipedia &
