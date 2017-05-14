@@ -67,12 +67,11 @@ python feature_word2vec.py wikipedia &
 pids+=($!)
 
 
-for pid in ${pids[*]}
-do
-	wait $pid
-done
-
 if [ $USER == "ubuntu" ]
 	then
+		for pid in ${pids[*]}
+		do
+			wait $pid
+		done
 		sudo poweroff
 fi
