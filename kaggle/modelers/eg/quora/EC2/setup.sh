@@ -31,3 +31,5 @@ mkdir -p $ROOT_DIR/Data/glove/gensim
 cd $ROOT_DIR/Data/glove/gensim
 wget -nc http://nlp.stanford.edu/data/glove.6B.zip
 unzip glove.6B.zip
+
+cd $ROOT_DIR/EC2
