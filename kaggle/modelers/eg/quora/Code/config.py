@@ -57,12 +57,17 @@ STR_MATCH_THRESHOLD = 0.85
 BM25_K1 = 1.6
 BM25_B = 0.75
 
+# svd
+SVD_DIM = 100
+SVD_N_ITER = 5
+
 # missing value
 # MISSING_VALUE_STRING = "MISSINGVALUE"
 MISSING_VALUE_NUMERIC = -1.
 
 
 # ------------------------ OTHER ------------------------
+RANDOM_SEED = 2016
 PLATFORM = platform.system()
 NUM_CORES = multiprocessing.cpu_count()
 
