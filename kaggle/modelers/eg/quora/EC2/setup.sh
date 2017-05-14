@@ -15,6 +15,7 @@ done
 
 CONDA_DIR=$HOME/anaconda2/bin
 # $CONDA_DIR/conda install -y numpy
+pip install regex
 
 mkdir -p $ROOT_DIR/Data
 wget -nc https://www.dropbox.com/s/cpvtr4qpunpkcac/train.csv -O $ROOT_DIR/Data/train.csv
