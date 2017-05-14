@@ -67,6 +67,13 @@ python feature_word2vec.py wikipedia &
 pids+=($!)
 
 
+#-----------------------------------------------------------------------
+# generate wordnet similarity features
+# time consuming part ~20 hrs
+python feature_wordnet_similarity.py &
+pids+=($!)
+
+
 if [ $USER == "ubuntu" ]
 	then
 		for pid in ${pids[*]}
