@@ -19,3 +19,6 @@ CONDA_DIR=$HOME/anaconda2/bin
 mkdir -p $ROOT_DIR/Data
 wget -nc https://www.dropbox.com/s/cpvtr4qpunpkcac/train.csv -O $ROOT_DIR/Data/train.csv
 wget -nc https://www.dropbox.com/s/ze8odkdw1444e92/test.csv -O $ROOT_DIR/Data/test.csv
+
+mkdir -p $ROOT_DIR/Data/glove/gensim
+wget -nc http://nlp.stanford.edu/data/glove.6B.zip $ROOT_DIR/Data/glove/gensim/glove.6B.zip
