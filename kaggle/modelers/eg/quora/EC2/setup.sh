@@ -9,7 +9,7 @@ for f in $(ls -A)
 do
 	if [ $f != "$(basename "$0")" ]
 		then
-			cp $ROOT_DIR/EC2/$f $HOME
+			cp -n $ROOT_DIR/EC2/$f $HOME
 	fi
 done
 
