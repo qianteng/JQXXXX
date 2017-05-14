@@ -34,5 +34,6 @@ mkdir -p $ROOT_DIR/Data/glove/gensim
 cd $ROOT_DIR/Data/glove/gensim
 wget -nc http://nlp.stanford.edu/data/glove.6B.zip
 unzip glove.6B.zip
+echo '400000 300' | cat - glove.6B.300d.txt > temp && mv temp glove.6B.300d.txt
 
 cd $ROOT_DIR/EC2
