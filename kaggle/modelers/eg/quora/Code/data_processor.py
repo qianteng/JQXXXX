@@ -39,6 +39,11 @@ class BaseReplacer(object):
         return regex.sub(r"\s+", " ", text).strip()
 
 
+class UnicodeConverter(BaseReplacer):
+    def transform(self, text):
+        return unicode(text, 'utf-8')
+
+
 ## deal with case
 class LowerCaseConverter(BaseReplacer):
     """
@@ -403,6 +408,7 @@ def main():
 
     # clean using a list of processors
     processors = [
+        UnicodeConverter(),
         LowerCaseConverter(), 
         # See LowerUpperCaseSplitter and UnitConverter for why we put UnitConverter here
         UnitConverter(),
