@@ -73,6 +73,7 @@ AUTO_SPELLING_CHECKER_N_JOBS = NUM_CORES
 # ---------------------- CREATE PATH --------------------
 DIRS = []
 DIRS += [CLEAN_DATA_DIR]
+DIRS += [FEAT_DIR]
 DIRS += [LOG_DIR]
 
 os_utils._create_dirs(DIRS)
