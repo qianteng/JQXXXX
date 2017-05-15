@@ -13,8 +13,8 @@ from utils import os_utils
 
 # ---------------------- Overall -----------------------
 TASK = 'all'
-# for testing data processing and feature generation
-TASK = "sample"
+# # for testing data processing and feature generation
+# TASK = "sample"
 SAMPLE_SIZE = 1000
 
 # ------------------------ PATH ------------------------
