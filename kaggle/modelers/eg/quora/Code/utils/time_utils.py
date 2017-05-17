@@ -18,3 +18,9 @@ def _timestamp_pretty():
     now = datetime.datetime.now()
     now_str = now.strftime("%Y%m%d%H%M")
     return now_str
+
+
+def _timestamp_logging():
+    now = datetime.datetime.now()
+    now_str = now.strftime("%Y-%m-%d %H:%M:%S")
+    return now_str

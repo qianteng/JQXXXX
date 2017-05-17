@@ -9,7 +9,7 @@ import os
 import logging
 import logging.handlers
 
-from . import os_utils, sms_utils
+from . import os_utils, sms_utils, time_utils
 
 
 def _get_logger(logdir, logname, loglevel=logging.INFO):
@@ -28,4 +28,4 @@ def _get_logger(logdir, logname, loglevel=logging.INFO):
     return logger
 
 def _sms():
-    sms_utils._send("报告主人，程序运行完啦！୧(๑•̀⌄•́๑)૭✧\n{}".format(os_utils._command()))
+    sms_utils._send("[{}]\n报告主人，程序运行完啦！୧(๑•̀⌄•́๑)૭✧\n{}".format(time_utils._timestamp_logging(), os_utils._command()))
