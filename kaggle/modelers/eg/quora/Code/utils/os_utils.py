@@ -8,6 +8,7 @@
 import os
 import time
 import shutil
+import sys
 
 
 def _gen_signature():
@@ -30,3 +31,6 @@ def _remove_files(files):
 def _remove_dirs(dirs):
     for dir in dirs:
         shutil.rmtree(dir)
+
+def _command():
+    return " ".join(sys.argv)
