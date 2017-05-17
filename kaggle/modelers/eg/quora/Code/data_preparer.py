@@ -12,6 +12,7 @@ import pandas as pd
 
 import config
 from utils import pkl_utils
+from utils import logging_utils
 
 def main():
 	# load provided data
@@ -35,3 +36,4 @@ def main():
 
 if __name__ == "__main__":
 	main()
+	logging_utils._sms()

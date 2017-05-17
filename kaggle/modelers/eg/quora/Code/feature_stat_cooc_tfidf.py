@@ -308,3 +308,4 @@ def main(which):
 
 if __name__ == "__main__":
     main(sys.argv[1])
+    logging_utils._sms()

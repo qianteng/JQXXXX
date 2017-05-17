@@ -256,3 +256,4 @@ if __name__ == "__main__":
     run_count()
     # # not used in final submission
     # run_position()
+    logging_utils._sms()

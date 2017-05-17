@@ -9,6 +9,8 @@ import os
 import logging
 import logging.handlers
 
+from . import os_utils, sms_utils
+
 
 def _get_logger(logdir, logname, loglevel=logging.INFO):
     fmt = "[%(asctime)s] %(levelname)s: %(message)s"
@@ -24,3 +26,6 @@ def _get_logger(logdir, logname, loglevel=logging.INFO):
     logger.addHandler(handler)
     logger.setLevel(loglevel)
     return logger
+
+def _sms():
+    sms_utils._send("报告主人，程序运行完啦！୧(๑•̀⌄•́๑)૭✧\n{}".format(os_utils._command()))
