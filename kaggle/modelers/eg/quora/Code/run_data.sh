@@ -77,7 +77,7 @@ pids+=($!)
 #-----------------------------------------------------------------------
 # generate vector space features
 # most memory consuming part > 16GB
-python feature_vector_space.py
+# python feature_vector_space.py
 
 
 if [ $USER == "ubuntu" ]
