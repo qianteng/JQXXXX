@@ -612,3 +612,4 @@ if __name__ == "__main__":
     run_lsa_ngram_pair()
     run_lsa_ngram_cooc()
     # run_tsne_lsa_ngram()
+    logging_utils._sms()

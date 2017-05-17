@@ -74,6 +74,12 @@ python feature_wordnet_similarity.py &
 pids+=($!)
 
 
+#-----------------------------------------------------------------------
+# generate vector space features
+# most memory consuming part > 16GB
+python feature_vector_space.py
+
+
 if [ $USER == "ubuntu" ]
 	then
 		for pid in ${pids[*]}
