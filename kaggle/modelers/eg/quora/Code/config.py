@@ -25,6 +25,7 @@ CLEAN_DATA_DIR = DATA_DIR + "/Clean"
 
 FEAT_DIR = ROOT_DIR + "/Feat"
 FEAT_FILE_SUFFIX = ".pkl"
+FEAT_CONF_DIR = ROOT_DIR + "/Code/conf"
 
 LOG_DIR = ROOT_DIR + "/Log"
 
@@ -78,7 +79,7 @@ AUTO_SPELLING_CHECKER_N_JOBS = NUM_CORES
 # ---------------------- CREATE PATH --------------------
 DIRS = []
 DIRS += [CLEAN_DATA_DIR]
-DIRS += [FEAT_DIR]
+DIRS += [FEAT_DIR, FEAT_CONF_DIR]
 DIRS += [LOG_DIR]
 
 os_utils._create_dirs(DIRS)
