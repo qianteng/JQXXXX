@@ -166,4 +166,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    logging_utils._sms()
+    logging_utils._succeeded()
