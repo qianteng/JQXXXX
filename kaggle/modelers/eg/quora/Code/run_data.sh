@@ -17,60 +17,60 @@ python data_processor.py
 
 #-----------------------------------------------------------------------
 # generate basic features
-python feature_basic.py &
+nohup python feature_basic.py &
 pids+=($!)
 
 
 #-----------------------------------------------------------------------
 # generate distance features
-python feature_distance.py jaccard &
+nohup python feature_distance.py jaccard &
 pids+=($!)
-python feature_distance.py edit &
+nohup python feature_distance.py edit &
 pids+=($!)
 
 
 #-----------------------------------------------------------------------
 # generate first and last ngram features
-python feature_first_last_ngram.py &
+nohup python feature_first_last_ngram.py &
 pids+=($!)
 
 
 #-----------------------------------------------------------------------
 # generate intersect features
-python feature_intersect_count.py &
+nohup python feature_intersect_count.py &
 pids+=($!)
-python feature_intersect_position.py &
+nohup python feature_intersect_position.py &
 pids+=($!)
 
 
 #-----------------------------------------------------------------------
 # generate match features
-python feature_match.py &
+nohup python feature_match.py &
 pids+=($!)
 
 
 #-----------------------------------------------------------------------
 # generate statistical cooccurrence (weighted) features
-python feature_stat_cooc_tfidf.py tf &
+nohup python feature_stat_cooc_tfidf.py tf &
 pids+=($!)
-python feature_stat_cooc_tfidf.py tfidf &
+nohup python feature_stat_cooc_tfidf.py tfidf &
 pids+=($!)
-python feature_stat_cooc_tfidf.py bm25 &
+nohup python feature_stat_cooc_tfidf.py bm25 &
 pids+=($!)
 
 
 #-----------------------------------------------------------------------
 # generate word2vec features using pre-trained word2vec model
-python feature_word2vec.py google &
+nohup python feature_word2vec.py google &
 pids+=($!)
-python feature_word2vec.py wikipedia &
+nohup python feature_word2vec.py wikipedia &
 pids+=($!)
 
 
 #-----------------------------------------------------------------------
 # generate wordnet similarity features
 # time consuming part ~20 hrs
-python feature_wordnet_similarity.py &
+nohup python feature_wordnet_similarity.py &
 pids+=($!)
 
 
