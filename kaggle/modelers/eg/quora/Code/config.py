@@ -8,6 +8,8 @@ import multiprocessing
 import platform
 import subprocess
 
+import numpy as np
+
 from utils import os_utils
 
 
@@ -62,6 +64,10 @@ BM25_B = 0.75
 SVD_DIM = 100
 SVD_N_ITER = 5
 
+# count transformer
+
+COUNT_TRANSFORM = np.log1p
+
 # missing value
 # MISSING_VALUE_STRING = "MISSINGVALUE"
 MISSING_VALUE_NUMERIC = -1.
@@ -80,6 +86,8 @@ AUTO_SPELLING_CHECKER_N_JOBS = NUM_CORES
 DIRS = []
 DIRS += [CLEAN_DATA_DIR]
 DIRS += [FEAT_DIR, FEAT_CONF_DIR]
+DIRS += [FEAT_DIR + "/All"]
+DIRS += [FEAT_DIR + "/Combine"]
 DIRS += [LOG_DIR]
 
 os_utils._create_dirs(DIRS)
