@@ -99,7 +99,7 @@ class Combiner:
         self.X_train = dfTrain.values # .astype(float)
 
         dfTest = dfAll.iloc[TRAIN_SIZE:].copy()
-        self.X_test = dfTest.values.astype(float)
+        self.X_test = dfTest.values # .astype(float)
 
         ## all
         first = True
