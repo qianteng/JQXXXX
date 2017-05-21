@@ -36,6 +36,9 @@ WORD2VEC_MODEL_DIR = DATA_DIR + "/word2vec"
 GLOVE_WORD2VEC_MODEL_DIR = DATA_DIR + "/glove/gensim"
 # DOC2VEC_MODEL_DIR = "%s/doc2vec"%DATA_DIR
 
+# index split
+SPLIT_DIR = DATA_DIR + "/split"
+
 # ------------------------ DATA ------------------------
 # provided data
 TRAIN_DATA = DATA_DIR + "/train.csv"
@@ -53,6 +56,10 @@ TEST_SIZE = 2345796
 
 
 # ------------------------ PARAM ------------------------
+# cv
+N_RUNS = 5
+# N_FOLDS = 1
+
 # intersect count/match
 STR_MATCH_THRESHOLD = 0.85
 
@@ -85,6 +92,7 @@ AUTO_SPELLING_CHECKER_N_JOBS = NUM_CORES
 # ---------------------- CREATE PATH --------------------
 DIRS = []
 DIRS += [CLEAN_DATA_DIR]
+DIRS += [SPLIT_DIR]
 DIRS += [FEAT_DIR, FEAT_CONF_DIR]
 DIRS += [FEAT_DIR + "/All"]
 DIRS += [FEAT_DIR + "/Combine"]
