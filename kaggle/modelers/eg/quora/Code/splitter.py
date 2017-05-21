@@ -62,5 +62,27 @@ def main():
 	splitter.save(config.SPLIT_DIR + "/splits_level1.pkl")
 
 
+	## splits for level2
+	splits_level1 = pkl_utils._load(config.SPLIT_DIR + "/splits_level1.pkl")
+	splits_level2 = [0] * config.N_RUNS
+	for run, (trainInd, validInd) in enumerate(splits_level1):
+		dfValid = dfTrain.iloc[validInd].copy()
+		splitter2 = QuoraSplitter(dfTrain=dfValid, dfTest=dfTest, n_iter=config.N_RUNS, random_state=run, verbose=True)
+		splitter2.split()
+		splits_level2[run] = splitter2.splits[-1]
+		pkl_utils._save(config.SPLIT_DIR + "/splits_level2.pkl", splits_level2)
+
+
+	## splits for level3
+	splits_level2 = pkl_utils._load(config.SPLIT_DIR + "/splits_level2.pkl")
+	splits_level3 = [0] * config.N_RUNS
+	for run, (trainInd, validInd) in enumerate(splits_level2):
+		dfValid = dfTrain.iloc[validInd].copy()
+		splitter3 = QuoraSplitter(dfTrain=dfValid, dfTest=dfTest, n_iter=config.N_RUNS, random_state=run, verbose=True)
+		splitter3.split()
+		splits_level3[run] = splitter3.splits[-1]
+		pkl_utils._save(config.SPLIT_DIR + "/splits_level3.pkl", splits_level3)
+
+
 if __name__ == "__main__":
     main()
