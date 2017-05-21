@@ -40,9 +40,9 @@ class QuoraSplitter:
 				print "-" * 50
 				print "Index for run: {}".format(run + 1)
 				print "Train (num = {})".format(len(trainInd))
-				print trainInd[:10]
+				print trainInd
 				print "Valid (num = {})".format(len(validInd))
-				print validInd[:10]
+				print validInd
 
 		return self
 
