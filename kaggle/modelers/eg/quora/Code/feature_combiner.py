@@ -19,13 +19,12 @@ from config import TRAIN_SIZE
 from utils import logging_utils, time_utils, pkl_utils, np_utils
 
 
-# splitter_level1 = pkl_utils._load("%s/splits_level1.pkl"%config.SPLIT_DIR)
-# splitter_level2 = pkl_utils._load("%s/splits_level2.pkl"%config.SPLIT_DIR)
-# splitter_level3 = pkl_utils._load("%s/splits_level3.pkl"%config.SPLIT_DIR)
-# assert len(splitter_level1) == len(splitter_level2)
-# assert len(splitter_level1) == len(splitter_level3)
-# n_iter = len(splitter_level1)
-n_iter = 0
+splitter_level1 = pkl_utils._load("%s/splits_level1.pkl"%config.SPLIT_DIR)
+splitter_level2 = pkl_utils._load("%s/splits_level2.pkl"%config.SPLIT_DIR)
+splitter_level3 = pkl_utils._load("%s/splits_level3.pkl"%config.SPLIT_DIR)
+assert len(splitter_level1) == len(splitter_level2)
+assert len(splitter_level1) == len(splitter_level3)
+n_iter = len(splitter_level1)
 
 
 class Combiner:
@@ -40,7 +39,7 @@ class Combiner:
         self.basic_only = 0
         logname = "feature_combiner_%s_%s.log"%(feature_name, time_utils._timestamp())
         self.logger = logging_utils._get_logger(config.LOG_DIR, logname)
-        # self.splitter = splitter_level1
+        self.splitter = splitter_level1
         self.n_iter = n_iter
 
     def load_feature(self, feature_dir, feature_name):
@@ -96,10 +95,10 @@ class Combiner:
         ## basic
         dfTrain = dfAll.iloc[:TRAIN_SIZE].copy()
         self.y_train = dfTrain["is_duplicate"].values.astype(float)
-        self.X_train = dfTrain.values # .astype(float)
+        self.X_train = dfTrain.values.astype(float)
 
         dfTest = dfAll.iloc[TRAIN_SIZE:].copy()
-        self.X_test = dfTest.values # .astype(float)
+        self.X_test = dfTest.values.astype(float)
 
         ## all
         first = True
@@ -217,8 +216,8 @@ class Combiner:
             "X_train_cv": self.X_train_cv,
             "X_train_cv_all": self.X_train_cv_all,
             "X_test": self.X_test,                    
-            # "id_test": self.id_test,
-            # "splitter": self.splitter,
+            "id_test": self.id_test,
+            "splitter": self.splitter,
             "n_iter": self.n_iter,
             "basic_only": self.basic_only,
             "feature_names": self.feature_names
@@ -280,7 +279,7 @@ class StackingCombiner:
         dfTrain = dfAll.iloc[:TRAIN_SIZE].copy()
 
         dfTest = dfAll.iloc[TRAIN_SIZE:].copy()
-        self.id_test = dfTest["id"].values.astype(int)
+        self.id_test = dfTest["test_id"].values.astype(int)
 
         ## all
         first = True
