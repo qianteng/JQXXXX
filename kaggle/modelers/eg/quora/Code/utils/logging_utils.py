@@ -28,4 +28,4 @@ def _get_logger(logdir, logname, loglevel=logging.INFO):
     return logger
 
 def _succeeded():
-    sms_utils._send("[{}]\n报告主人，程序运行完啦！୧(๑•̀⌄•́๑)૭✧\n{}".format(time_utils._timestamp_logging(), os_utils._command()))
+    sms_utils._send("[{}]\n报告主人，程序运行完啦！୧(๑•̀⌄•́๑)૭✧\n{} {}".format(time_utils._timestamp_logging(), time_utils._etime(), os_utils._command()))
