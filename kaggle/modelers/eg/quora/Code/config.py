@@ -29,6 +29,9 @@ FEAT_DIR = ROOT_DIR + "/Feat"
 FEAT_FILE_SUFFIX = ".pkl"
 FEAT_CONF_DIR = ROOT_DIR + "/Code/conf"
 
+OUTPUT_DIR = ROOT_DIR + "/Output"
+SUBM_DIR = OUTPUT_DIR + "/Subm"
+
 LOG_DIR = ROOT_DIR + "/Log"
 
 # word2vec/doc2vec/glove
@@ -98,6 +101,7 @@ DIRS += [FEAT_DIR, FEAT_CONF_DIR]
 DIRS += [FEAT_DIR + "/All"]
 DIRS += ["{}/Run{}".format(FEAT_DIR, i + 1) for i in range(N_RUNS)]
 DIRS += [FEAT_DIR + "/Combine"]
+DIRS += [OUTPUT_DIR, SUBM_DIR]
 DIRS += [LOG_DIR]
 
 os_utils._create_dirs(DIRS)
