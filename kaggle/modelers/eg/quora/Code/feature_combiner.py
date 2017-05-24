@@ -48,7 +48,7 @@ class Combiner:
 
     def combine(self):
 
-        dfAll = pkl_utils._load(config.ALL_DATA_RAW)
+        dfAll = pkl_utils._load(config.INFO_DATA)
         dfAll_raw = dfAll.copy()
         y_train = dfAll["is_duplicate"].values[:TRAIN_SIZE]
 
@@ -95,9 +95,12 @@ class Combiner:
         ## basic
         dfTrain = dfAll.iloc[:TRAIN_SIZE].copy()
         self.y_train = dfTrain["is_duplicate"].values.astype(float)
+        dfTrain.drop(["id","is_duplicate"], axis=1, inplace=True)
         self.X_train = dfTrain.values.astype(float)
 
         dfTest = dfAll.iloc[TRAIN_SIZE:].copy()
+        self.id_test = dfTest["id"].values.astype(int)
+        dfTest.drop(["id","is_duplicate"], axis=1, inplace=True)
         self.X_test = dfTest.values.astype(float)
 
         ## all
@@ -279,7 +282,7 @@ class StackingCombiner:
         dfTrain = dfAll.iloc[:TRAIN_SIZE].copy()
 
         dfTest = dfAll.iloc[TRAIN_SIZE:].copy()
-        self.id_test = dfTest["test_id"].values.astype(int)
+        self.id_test = dfTest["id"].values.astype(int)
 
         ## all
         first = True
