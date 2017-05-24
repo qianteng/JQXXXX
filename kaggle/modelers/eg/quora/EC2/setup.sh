@@ -17,6 +17,7 @@ cp $ROOT_DIR/EC2/.vimrc $HOME
 conda install -y gensim=0
 conda install -y numpy
 conda update -y scikit-learn
+pip install hyperopt
 pip install regex
 pip install twilio
 
