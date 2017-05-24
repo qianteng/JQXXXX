@@ -20,6 +20,8 @@ def main():
 	dfTest  = pd.read_csv(config.TEST_DATA)
 
 	#
+	dfTrain.drop(["qid1", "qid2"], axis=1, inplace=True)
+	dfTest.rename(columns={"test_id": "id"})
 	dfTest["is_duplicate"] = np.zeros(config.TEST_SIZE)
 
 	# concat train and test
