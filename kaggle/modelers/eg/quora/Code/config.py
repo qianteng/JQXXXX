@@ -96,6 +96,7 @@ DIRS += [CLEAN_DATA_DIR]
 DIRS += [SPLIT_DIR]
 DIRS += [FEAT_DIR, FEAT_CONF_DIR]
 DIRS += [FEAT_DIR + "/All"]
+DIRS += ["{}/Run{}".format(FEAT_DIR, i + 1) for i in range(N_RUNS)]
 DIRS += [FEAT_DIR + "/Combine"]
 DIRS += [LOG_DIR]
 
