@@ -33,6 +33,10 @@ def main():
 		dfAll = dfAll.iloc[:config.SAMPLE_SIZE].copy()
 	pkl_utils._save(config.ALL_DATA_RAW, dfAll)
 
+	# info
+	dfInfo = dfAll[["id", "is_duplicate"]].copy()
+	pkl_utils._save(config.INFO_DATA, dfInfo)
+
 
 if __name__ == "__main__":
 	main()
