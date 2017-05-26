@@ -109,6 +109,7 @@ DIRS += [FEAT_DIR + "/All"]
 DIRS += ["{}/Run{}".format(FEAT_DIR, i + 1) for i in range(N_RUNS)]
 DIRS += [FEAT_DIR + "/Combine"]
 DIRS += [OUTPUT_DIR, SUBM_DIR]
+DIRS += ["{}/Run{}".format(OUTPUT_DIR, i + 1) for i in range(N_RUNS)]
 DIRS += [LOG_DIR]
 
 os_utils._create_dirs(DIRS)
