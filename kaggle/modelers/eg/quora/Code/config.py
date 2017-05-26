@@ -58,6 +58,9 @@ if TASK == "sample":
     TRAIN_SIZE = SAMPLE_SIZE
 TEST_SIZE = 2345796
 
+TRAIN_MEAN = 0.369198
+TRAIN_VAR = 0.232891
+
 
 # ------------------------ PARAM ------------------------
 # cv
