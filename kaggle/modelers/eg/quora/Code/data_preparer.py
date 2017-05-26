@@ -19,6 +19,10 @@ def main():
 	dfTrain = pd.read_csv(config.TRAIN_DATA)
 	dfTest  = pd.read_csv(config.TEST_DATA)
 
+	# 
+	print("Train Mean: %.6f"%np.mean(dfTrain["is_duplicate"]))
+	print("Train Var: %.6f"%np.var(dfTrain["is_duplicate"]))
+
 	#
 	dfTrain.drop(["qid1", "qid2"], axis=1, inplace=True)
 	dfTest.rename(columns={"test_id": "id"}, inplace=True)
