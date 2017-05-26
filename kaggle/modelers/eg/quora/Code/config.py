@@ -78,6 +78,10 @@ BM25_B = 0.75
 SVD_DIM = 100
 SVD_N_ITER = 5
 
+# xgboost
+# mean of is_duplicate in training set
+BASE_SCORE = TRAIN_MEAN
+
 # count transformer
 
 COUNT_TRANSFORM = np.log1p
