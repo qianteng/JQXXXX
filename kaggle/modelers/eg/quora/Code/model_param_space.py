@@ -82,7 +82,7 @@ param_space_reg_xgb_tree_best_single_model = {
 ## classification with tree booster
 param_space_clf_xgb_tree = {
     "booster": "gbtree",
-    "objective": "binary:logistic",
+    "objective": "multi:softprob",
     "base_score": config.BASE_SCORE,
     "n_estimators" : hp.quniform("n_estimators", xgb_n_estimators_min, xgb_n_estimators_max, xgb_n_estimators_step),
     "learning_rate" : hp.qloguniform("learning_rate", np.log(0.002), np.log(0.1), 0.002),
