@@ -44,7 +44,7 @@ param_space_reg_xgb_linear = {
 ## regression with tree booster
 param_space_reg_xgb_tree = {
     "booster": "gbtree",
-    "objective": "reg:linear",
+    "objective": "binary:logistic",
     "base_score": config.BASE_SCORE,
     "n_estimators" : hp.quniform("n_estimators", xgb_n_estimators_min, xgb_n_estimators_max, xgb_n_estimators_step),
     "learning_rate" : hp.qloguniform("learning_rate", np.log(0.002), np.log(0.1), 0.002),
@@ -58,6 +58,8 @@ param_space_reg_xgb_tree = {
     "colsample_bylevel": hp.quniform("colsample_bylevel", 0.1, 1, 0.05),
     "nthread": xgb_nthread,
     "seed": xgb_random_seed,
+
+    "eval_metric": "logloss",
 }
 
 ## regression with tree booster (parm for best single model)
