@@ -63,7 +63,7 @@ param_space_reg_xgb_tree = {
 ## regression with tree booster (parm for best single model)
 param_space_reg_xgb_tree_best_single_model = {
     "booster": "gbtree",
-    "objective": "reg:linear",
+    "objective": "binary:logistic",
     "base_score": config.BASE_SCORE,
     "n_estimators" : 880,
     "learning_rate" : 0.014,
