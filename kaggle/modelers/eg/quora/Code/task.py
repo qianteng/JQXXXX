@@ -97,6 +97,7 @@ class Learner:
             y_pred = self.learner.predict(X, feature_names)
         else:
             y_pred = self.learner.predict(X)
+        y_pred = np.clip(y_pred, 0., 1.)
         return y_pred
 
     def plot_importance(self):
