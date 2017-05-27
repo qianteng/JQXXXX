@@ -330,7 +330,7 @@ class Task:
         # submission
         fname = "%s/test.pred.%s.[Mean%.6f]_[Std%.6f].csv"%(
             config.SUBM_DIR, self.__str__(), self.rmse_cv_mean, self.rmse_cv_std)
-        pd.DataFrame({"id": id_test, "relevance": y_pred}).to_csv(fname, index=False)
+        pd.DataFrame({"test_id": id_test, "is_duplicate": y_pred}).to_csv(fname, index=False)
 
         # plot importance
         if self.plot_importance:
@@ -385,7 +385,7 @@ class StackingTask(Task):
         # submission
         fname = "%s/test.pred.%s.[Mean%.6f]_[Std%.6f].csv"%(
             config.SUBM_DIR, self.__str__(), self.rmse_cv_mean, self.rmse_cv_std)
-        pd.DataFrame({"id": id_test, "relevance": y_pred}).to_csv(fname, index=False)
+        pd.DataFrame({"test_id": id_test, "is_duplicate": y_pred}).to_csv(fname, index=False)
         return self
 
 
