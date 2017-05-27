@@ -22,7 +22,7 @@ from hyperopt import fmin, tpe, hp, STATUS_OK, Trials, space_eval
 
 import config
 from utils import dist_utils, logging_utils, pkl_utils, time_utils
-from utils.xgb_utils import XGBRegressor, HomedepotXGBClassifier as XGBClassifier
+from utils.xgb_utils import XGBRegressor, XGBClassifier
 from utils.rgf_utils import RGFRegressor
 from utils.skl_utils import SVR, LinearSVR, KNNRegressor, AdaBoostRegressor, RandomRidge
 try:
