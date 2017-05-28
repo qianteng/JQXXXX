@@ -103,10 +103,11 @@ class XGBClassifier:
     def __init__(self, num_class=2, booster='gbtree', base_score=0., colsample_bylevel=1., 
                 colsample_bytree=1., gamma=0., learning_rate=0.1, max_delta_step=0.,
                 max_depth=6, min_child_weight=1., missing=None, n_estimators=100, 
-                nthread=1, objective='multi:softprob', reg_alpha=1., reg_lambda=0., 
+                nthread=1, objective='multi:softprob', eval_metric=None, reg_alpha=1., reg_lambda=0., 
                 reg_lambda_bias=0., seed=0, silent=True, subsample=1.):
         self.param = {
             "objective": objective,
+            "eval_metric": eval_metric,
             "booster": booster,
             "eta": learning_rate,
             "max_depth": max_depth,
@@ -136,7 +137,7 @@ class XGBClassifier:
         return ("%s(num_class=%d, booster=\'%s\', base_score=%f, colsample_bylevel=%f, \n"
                     "colsample_bytree=%f, gamma=%f, learning_rate=%f, max_delta_step=%f, \n"
                     "max_depth=%d, min_child_weight=%f, missing=\'%s\', n_estimators=%d, \n"
-                    "nthread=%d, objective=\'%s\', reg_alpha=%f, reg_lambda=%f, \n"
+                    "nthread=%d, objective=\'%s\', eval_metric=\'%s\', reg_alpha=%f, reg_lambda=%f, \n"
                     "reg_lambda_bias=%f, seed=%d, silent=%d, subsample=%f)" % (
                     self.__class__.__name__,
                     self.num_class,
@@ -153,6 +154,7 @@ class XGBClassifier:
                     self.n_estimators,
                     self.param["nthread"],
                     self.param["objective"],
+                    self.param["eval_metric"],
                     self.param["alpha"],
                     self.param["lambda"],
                     self.param["lambda_bias"],
