@@ -6,6 +6,9 @@
 """
 
 import datetime
+import os
+
+from subprocess import Popen, PIPE
 
 
 def _timestamp():
@@ -24,3 +27,8 @@ def _timestamp_logging():
     now = datetime.datetime.now()
     now_str = now.strftime("%Y-%m-%d %H:%M:%S")
     return now_str
+
+def _etime():
+    pid = str(os.getpid())
+    (stdout, stderr) = Popen(["ps", "-p", pid, "-o", "etime="], stdout=PIPE).communicate()
+    return stdout

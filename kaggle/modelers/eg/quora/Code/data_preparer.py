@@ -19,7 +19,13 @@ def main():
 	dfTrain = pd.read_csv(config.TRAIN_DATA)
 	dfTest  = pd.read_csv(config.TEST_DATA)
 
+	# 
+	print("Train Mean: %.6f"%np.mean(dfTrain["is_duplicate"]))
+	print("Train Var: %.6f"%np.var(dfTrain["is_duplicate"]))
+
 	#
+	dfTrain.drop(["qid1", "qid2"], axis=1, inplace=True)
+	dfTest.rename(columns={"test_id": "id"}, inplace=True)
 	dfTest["is_duplicate"] = np.zeros(config.TEST_SIZE)
 
 	# concat train and test
@@ -33,7 +39,11 @@ def main():
 		dfAll = dfAll.iloc[:config.SAMPLE_SIZE].copy()
 	pkl_utils._save(config.ALL_DATA_RAW, dfAll)
 
+	# info
+	dfInfo = dfAll[["id", "is_duplicate"]].copy()
+	pkl_utils._save(config.INFO_DATA, dfInfo)
+
 
 if __name__ == "__main__":
 	main()
-	logging_utils._sms()
+	logging_utils._succeeded()
