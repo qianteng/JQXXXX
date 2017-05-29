@@ -219,6 +219,10 @@ def main(which):
         ## word2vec model pretrained with Google News
         word2vec_model_dirs.append( config.WORD2VEC_MODEL_DIR + "/GoogleNews-vectors-negative300.bin" )
         model_prefixes.append( "GoogleNews" )
+    elif which == "common_crawl":
+        ## word2vec model pretrained with Common Crawl
+        word2vec_model_dirs.append( config.GLOVE_WORD2VEC_MODEL_DIR + "/glove.840B.300d.txt" )
+        model_prefixes.append( "CommonCrawl" )
 
     for word2vec_model_dir, model_prefix in zip(word2vec_model_dirs, model_prefixes):
         ## load model
