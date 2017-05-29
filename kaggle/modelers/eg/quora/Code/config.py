@@ -80,7 +80,7 @@ SVD_N_ITER = 5
 
 # xgboost
 # mean of is_duplicate in training set
-BASE_SCORE = TRAIN_MEAN * np.log(TRAIN_MEAN)
+BASE_SCORE = - (TRAIN_MEAN * np.log(TRAIN_MEAN) + (1 - TRAIN_MEAN) * np.log(1 - TRAIN_MEAN))
 
 # count transformer
 
