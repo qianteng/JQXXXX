@@ -45,7 +45,7 @@ class Learner:
         # xgboost
         if self.learner_name in ["reg_xgb_linear", "reg_xgb_tree", "reg_xgb_tree_best_single_model"]:
             return XGBRegressor(**self.param_dict)
-        if self.learner_name in ["clf_xgb_linear", "clf_xgb_tree"]:
+        if self.learner_name in ["clf_xgb_linear", "clf_xgb_tree", "clf_xgb_tree_best_single_model"]:
             return XGBClassifier(**self.param_dict)
         # sklearn
         if self.learner_name == "reg_skl_lasso":
