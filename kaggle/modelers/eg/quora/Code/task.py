@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import Lasso, Ridge, BayesianRidge
 from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor, GradientBoostingRegressor
+from sklearn.metrics import log_loss
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials, space_eval
 
 import config
@@ -278,7 +279,7 @@ class Task:
                 df["target"] = y_valid
                 df.to_csv(fname, index=False)
 
-                mlogloss_cv[i] = np.mean([-np.log(y_proba[j][int(y_valid[j])]) for j in range(len(y_valid))])
+                mlogloss_cv[i] = log_loss(y_valid, y_proba)
                 # log
                 self.logger.info("      {:>3}    {:>8}    {} x {}".format(
                     i+1, np.round(mlogloss_cv[i],6), X_train.shape[0], X_train.shape[1]))
