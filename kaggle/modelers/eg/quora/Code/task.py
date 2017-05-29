@@ -273,7 +273,7 @@ class Task:
             if hasattr(self.learner.learner, "predict_proba"):
                 y_proba = self.learner.learner.predict_proba(X_valid)
                 fname = "%s/Run%d/valid.proba.%s.csv"%(config.OUTPUT_DIR, i+1, self.__str__())
-                columns = ["proba%d"%i for i in range(y_proba.shape[1])]
+                columns = ["proba%d"%j for j in range(y_proba.shape[1])]
                 df = pd.DataFrame(y_proba, columns=columns)
                 df["target"] = y_valid
                 df.to_csv(fname, index=False)
