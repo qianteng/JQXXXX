@@ -99,6 +99,26 @@ param_space_clf_xgb_tree = {
     "seed": xgb_random_seed,
 }
 
+## classification with tree booster (parm for best single model)
+param_space_clf_xgb_tree_best_single_model = {
+    "booster": "gbtree",
+    "objective": "multi:softprob",
+    "eval_metric": "mlogloss",
+    "base_score": config.BASE_SCORE,
+    "n_estimators" : 1000,
+    "learning_rate" : 0.052,
+    "gamma": 0.0193355620725,
+    "reg_alpha" : 5.19006812363e-06,
+    "reg_lambda" : 0.102465742932,
+    "min_child_weight": 2.23975541232,
+    "max_depth": 9,
+    "subsample": 0.85,
+    "colsample_bytree": 1,
+    "colsample_bylevel": 0.25,
+    "nthread": xgb_nthread,
+    "seed": xgb_random_seed,
+}
+
 # -------------------------------------- Sklearn ---------------------------------------------
 ## lasso
 param_space_reg_skl_lasso = {
@@ -295,6 +315,7 @@ param_space_dict = {
     "reg_xgb_tree_best_single_model": param_space_reg_xgb_tree_best_single_model,
     "reg_xgb_linear": param_space_reg_xgb_linear,
     "clf_xgb_tree": param_space_clf_xgb_tree,
+    "clf_xgb_tree_best_single_model": param_space_clf_xgb_tree_best_single_model,
     # sklearn
     "reg_skl_lasso": param_space_reg_skl_lasso,
     "reg_skl_ridge": param_space_reg_skl_ridge,
