@@ -234,8 +234,8 @@ class Task:
         self.verbose = verbose
         self.plot_importance = plot_importance
         self.n_iter = self.feature.n_iter
-        self.rmse_cv_mean = 0
-        self.rmse_cv_std = 0
+        self.mlogloss_cv_mean = 0
+        self.mlogloss_cv_std = 0
 
     def __str__(self):
         return "[Feat@%s]_[Learner@%s]%s"%(str(self.feature), str(self.learner), str(self.suffix))
@@ -257,19 +257,15 @@ class Task:
             self.logger.info("Param")
             self._print_param_dict(self.learner.param_dict)
             self.logger.info("Result")
-            self.logger.info("      Run      RMSE        Shape")
+            self.logger.info("      Run    mlogloss      Shape")
     
-        rmse_cv = np.zeros(self.n_iter)
+        mlogloss_cv = np.zeros(self.n_iter)
         for i in range(self.n_iter):
             # data
             X_train, y_train, X_valid, y_valid = self.feature._get_train_valid_data(i)
             # fit
             self.learner.fit(X_train, y_train)
             y_pred = self.learner.predict(X_valid)
-            rmse_cv[i] = dist_utils._rmse(y_valid, y_pred)
-            # log
-            self.logger.info("      {:>3}    {:>8}    {} x {}".format(
-                i+1, np.round(rmse_cv[i],6), X_train.shape[0], X_train.shape[1]))
             # save
             fname = "%s/Run%d/valid.pred.%s.csv"%(config.OUTPUT_DIR, i+1, self.__str__())
             df = pd.DataFrame({"target": y_valid, "prediction": y_pred})
@@ -282,15 +278,20 @@ class Task:
                 df["target"] = y_valid
                 df.to_csv(fname, index=False)
 
-        self.rmse_cv_mean = np.mean(rmse_cv)
-        self.rmse_cv_std = np.std(rmse_cv)
+                mlogloss_cv[i] = np.mean([-np.log(y_proba[y_valid[j]][i]) for j in range(len(y_valid))])
+                # log
+                self.logger.info("      {:>3}    {:>8}    {} x {}".format(
+                    i+1, np.round(mlogloss_cv[i],6), X_train.shape[0], X_train.shape[1]))
+
+        self.mlogloss_cv_mean = np.mean(mlogloss_cv)
+        self.mlogloss_cv_std = np.std(mlogloss_cv)
         end = time.time()
         _sec = end - start
         _min = int(_sec/60.)
         if self.verbose:
-            self.logger.info("RMSE")
-            self.logger.info("      Mean: %.6f"%self.rmse_cv_mean)
-            self.logger.info("      Std: %.6f"%self.rmse_cv_std)
+            self.logger.info("mlogloss")
+            self.logger.info("      Mean: %.6f"%self.mlogloss_cv_mean)
+            self.logger.info("      Std: %.6f"%self.mlogloss_cv_std)
             self.logger.info("Time")
             if _min > 0:
                 self.logger.info("      %d mins"%_min)
@@ -328,7 +329,7 @@ class Task:
 
         # submission
         fname = "%s/test.pred.%s.[Mean%.6f]_[Std%.6f].csv"%(
-            config.SUBM_DIR, self.__str__(), self.rmse_cv_mean, self.rmse_cv_std)
+            config.SUBM_DIR, self.__str__(), self.mlogloss_cv_mean, self.mlogloss_cv_std)
         pd.DataFrame({"test_id": id_test, "is_duplicate": y_pred}).to_csv(fname, index=False)
 
         # plot importance
@@ -383,7 +384,7 @@ class StackingTask(Task):
 
         # submission
         fname = "%s/test.pred.%s.[Mean%.6f]_[Std%.6f].csv"%(
-            config.SUBM_DIR, self.__str__(), self.rmse_cv_mean, self.rmse_cv_std)
+            config.SUBM_DIR, self.__str__(), self.mlogloss_cv_mean, self.mlogloss_cv_std)
         pd.DataFrame({"test_id": id_test, "is_duplicate": y_pred}).to_csv(fname, index=False)
         return self
 
@@ -421,9 +422,9 @@ class TaskOptimizer:
             self.task = StackingTask(learner, self.feature, suffix, self.logger, self.verbose, self.refit_once)
         self.task.go()
         ret = {
-            "loss": self.task.rmse_cv_mean,
+            "loss": self.task.mlogloss_cv_mean,
             "attachments": {
-                "std": self.task.rmse_cv_std,
+                "std": self.task.mlogloss_cv_std,
             },
             "status": STATUS_OK,
         }
@@ -435,14 +436,14 @@ class TaskOptimizer:
         best = fmin(self._obj, self.model_param_space._build_space(), tpe.suggest, self.max_evals, trials)
         best_params = space_eval(self.model_param_space._build_space(), best)
         best_params = self.model_param_space._convert_int_param(best_params)
-        trial_rmses = np.asarray(trials.losses(), dtype=float)
-        best_ind = np.argmin(trial_rmses)
-        best_rmse_mean = trial_rmses[best_ind]
-        best_rmse_std = trials.trial_attachments(trials.trials[best_ind])["std"]
+        trial_mloglosses = np.asarray(trials.losses(), dtype=float)
+        best_ind = np.argmin(trial_mloglosses)
+        best_mlogloss_mean = trial_mloglosses[best_ind]
+        best_mlogloss_std = trials.trial_attachments(trials.trials[best_ind])["std"]
         self.logger.info("-"*50)
-        self.logger.info("Best RMSE")
-        self.logger.info("      Mean: %.6f"%best_rmse_mean)
-        self.logger.info("      std: %.6f"%best_rmse_std)
+        self.logger.info("Best mlogloss")
+        self.logger.info("      Mean: %.6f"%best_mlogloss_mean)
+        self.logger.info("      std: %.6f"%best_mlogloss_std)
         self.logger.info("Best param")
         self.task._print_param_dict(best_params)
         end = time.time()
