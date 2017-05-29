@@ -278,7 +278,7 @@ class Task:
                 df["target"] = y_valid
                 df.to_csv(fname, index=False)
 
-                mlogloss_cv[i] = np.mean([-np.log(y_proba[int(y_valid[j])][j]) for j in range(len(y_valid))])
+                mlogloss_cv[i] = np.mean([-np.log(y_proba[j][int(y_valid[j])]) for j in range(len(y_valid))])
                 # log
                 self.logger.info("      {:>3}    {:>8}    {} x {}".format(
                     i+1, np.round(mlogloss_cv[i],6), X_train.shape[0], X_train.shape[1]))
