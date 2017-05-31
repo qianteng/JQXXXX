@@ -3,5 +3,5 @@
 *.log
 *.out
 *.pkl
+*.pyc
 *.swp
-conf/
