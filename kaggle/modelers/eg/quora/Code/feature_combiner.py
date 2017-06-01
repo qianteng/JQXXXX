@@ -214,11 +214,11 @@ class Combiner:
 
     def save(self):
         data_dict = {
-            "X_train_basic": self.X_train,
-            "y_train": self.y_train,
+            "X_train_basic": self.X_train.astype(np.float32),
+            "y_train": self.y_train.astype(np.float32),
             "X_train_cv": self.X_train_cv,
             "X_train_cv_all": self.X_train_cv_all,
-            "X_test": self.X_test,                    
+            "X_test": self.X_test.astype(np.float32),                    
             "id_test": self.id_test,
             "splitter": self.splitter,
             "n_iter": self.n_iter,
