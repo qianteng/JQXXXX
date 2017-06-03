@@ -288,7 +288,7 @@ class Task:
                 df["target"] = y_valid
                 df.to_csv(fname, index=False)
 
-                mlogloss_cv[i] = log_loss(y_valid, y_proba)
+                mlogloss_cv[i] = log_loss(y_valid, y_proba, sample_weight=calc_sample_weight(y_valid))
                 # log
                 self.logger.info("      {:>3}    {:>8}    {} x {}".format(
                     i+1, np.round(mlogloss_cv[i],6), X_train.shape[0], X_train.shape[1]))
