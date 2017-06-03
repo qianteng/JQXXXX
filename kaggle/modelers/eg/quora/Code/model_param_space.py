@@ -218,9 +218,9 @@ param_space_reg_skl_gbm = {
     "verbose": 0,
 }
 
-## adaboost regressor
-param_space_reg_skl_adaboost = {
-    "base_estimator": hp.choice("base_estimator", ["dtr", "etr"]),
+## adaboost classifier
+param_space_clf_skl_adaboost = {
+    "base_estimator": hp.choice("base_estimator", ["dtc", "etc"]),
     "n_estimators": hp.quniform("n_estimators", skl_n_estimators_min, skl_n_estimators_max, skl_n_estimators_step),
     "learning_rate" : hp.qloguniform("learning_rate", np.log(0.002), np.log(0.1), 0.002),
     "max_features": hp.quniform("max_features", 0.1, 1, 0.05),
@@ -327,7 +327,7 @@ param_space_dict = {
     "clf_skl_etr": param_space_clf_skl_etr,
     "clf_skl_rf": param_space_clf_skl_rf,
     "reg_skl_gbm": param_space_reg_skl_gbm,
-    "reg_skl_adaboost": param_space_reg_skl_adaboost,
+    "clf_skl_adaboost": param_space_clf_skl_adaboost,
     # keras
     "reg_keras_dnn": param_space_reg_keras_dnn,
     # rgf

@@ -26,7 +26,7 @@ import config
 from utils import dist_utils, logging_utils, pkl_utils, time_utils
 from utils.xgb_utils import XGBRegressor, XGBClassifier
 from utils.rgf_utils import RGFRegressor
-from utils.skl_utils import SVR, LinearSVR, KNNRegressor, AdaBoostRegressor, RandomRidge
+from utils.skl_utils import SVR, LinearSVR, KNNRegressor, AdaBoostClassifier, RandomRidge
 try:
     from utils.keras_utils import KerasDNNRegressor
 except:
@@ -79,8 +79,8 @@ class Learner:
             return RandomForestClassifier(**self.param_dict)
         if self.learner_name == "reg_skl_gbm":
             return GradientBoostingRegressor(**self.param_dict)
-        if self.learner_name == "reg_skl_adaboost":
-            return AdaBoostRegressor(**self.param_dict)
+        if self.learner_name == "clf_skl_adaboost":
+            return AdaBoostClassifier(**self.param_dict)
         # keras
         if self.learner_name == "reg_keras_dnn":
             try:

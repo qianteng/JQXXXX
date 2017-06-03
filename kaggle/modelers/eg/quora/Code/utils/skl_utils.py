@@ -10,8 +10,8 @@ import sklearn.svm
 import sklearn.neighbors
 import sklearn.ensemble
 from sklearn.linear_model import Ridge
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.tree import ExtraTreeRegressor
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
+from sklearn.tree import ExtraTreeClassifier, ExtraTreeRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 
@@ -86,17 +86,17 @@ class KNNRegressor:
         return y_pred
 
 
-class AdaBoostRegressor:
+class AdaBoostClassifier:
     def __init__(self, base_estimator=None, n_estimators=50, max_features=1.0,
                 max_depth=6, learning_rate=1.0, loss='linear', random_state=None):
-        if base_estimator and base_estimator == 'etr':
-            base_estimator = ExtraTreeRegressor(max_depth=max_depth,
+        if base_estimator and base_estimator == 'etc':
+            base_estimator = ExtraTreeClassifier(max_depth=max_depth,
                                         max_features=max_features)
         else:
-            base_estimator = DecisionTreeRegressor(max_depth=max_depth,
+            base_estimator = DecisionTreeClassifier(max_depth=max_depth,
                                         max_features=max_features)
 
-        self.model = sklearn.ensemble.AdaBoostRegressor(
+        self.model = sklearn.ensemble.AdaBoostClassifier(
                                     base_estimator=base_estimator,
                                     n_estimators=n_estimators,
                                     learning_rate=learning_rate,
@@ -104,10 +104,10 @@ class AdaBoostRegressor:
                                     loss=loss)
 
     def __str__(self):
-        return "AdaBoostRegressor"
+        return "AdaBoostClassifier"
 
-    def fit(self, X, y):
-        self.model.fit(X, y)
+    def fit(self, X, y, feature_names=None, sample_weight=None):
+        self.model.fit(X, y, sample_weight=sample_weight)
         return self
 
     def predict(self, X):
