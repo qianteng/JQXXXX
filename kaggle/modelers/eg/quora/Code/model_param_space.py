@@ -207,8 +207,8 @@ param_space_clf_skl_rf = {
     "verbose": 0,
 }
 
-## gradient boosting regressor
-param_space_reg_skl_gbm = {
+## gradient boosting classifier
+param_space_clf_skl_gbm = {
     "n_estimators": hp.quniform("skl_gbm__n_estimators", skl_n_estimators_min, skl_n_estimators_max, skl_n_estimators_step),
     "learning_rate" : hp.qloguniform("skl__gbm_learning_rate", np.log(0.002), np.log(0.1), 0.002),
     "max_features": hp.quniform("skl_gbm__max_features", 0.1, 1, 0.05),
@@ -326,7 +326,7 @@ param_space_dict = {
     "reg_skl_knn": param_space_reg_skl_knn,
     "clf_skl_etr": param_space_clf_skl_etr,
     "clf_skl_rf": param_space_clf_skl_rf,
-    "reg_skl_gbm": param_space_reg_skl_gbm,
+    "clf_skl_gbm": param_space_clf_skl_gbm,
     "clf_skl_adaboost": param_space_clf_skl_adaboost,
     # keras
     "reg_keras_dnn": param_space_reg_keras_dnn,
