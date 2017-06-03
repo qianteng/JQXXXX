@@ -35,7 +35,7 @@ from model_param_space import ModelParamSpace
 
 def calc_sample_weight(y):
     sample_weight = np.ones(len(y))
-    y_mean = np.mean(y_train)
+    y_mean = np.mean(y)
     w1 = config.TEST_MEAN / y_mean
     w0 = (1 - config.TEST_MEAN) / (1 - y_mean)
     sample_weight[y == 0] = w0
