@@ -70,8 +70,8 @@ class XGBRegressor:
                     self.param["subsample"],
                 ))
         
-    def fit(self, X, y, feature_names=None):
-        data = xgb.DMatrix(X, label=y, missing=self.missing, feature_names=feature_names)
+    def fit(self, X, y, feature_names=None, weight=None):
+        data = xgb.DMatrix(X, label=y, missing=self.missing, feature_names=feature_names, weight=weight)
         data.set_base_margin(self.base_score*np.ones(X.shape[0]))
         self.model = xgb.train(self.param, data, self.n_estimators)
         return self
@@ -163,8 +163,8 @@ class XGBClassifier:
                     self.param["subsample"],
                 ))
 
-    def fit(self, X, y, feature_names=None):
-        data = xgb.DMatrix(X, label=y, missing=self.missing, feature_names=feature_names)
+    def fit(self, X, y, feature_names=None, weight=None):
+        data = xgb.DMatrix(X, label=y, missing=self.missing, feature_names=feature_names, weight=weight)
         data.set_base_margin(self.base_score*np.ones(X.shape[0] * self.num_class))
         self.model = xgb.train(self.param, data, self.n_estimators)
         return self
