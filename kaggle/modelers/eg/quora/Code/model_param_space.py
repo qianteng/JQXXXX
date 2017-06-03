@@ -196,7 +196,7 @@ param_space_reg_skl_etr = {
 }
 
 ## random forest classifier
-param_space_reg_skl_rf = {
+param_space_clf_skl_rf = {
     "n_estimators": hp.quniform("skl_rf__n_estimators", skl_n_estimators_min, skl_n_estimators_max, skl_n_estimators_step),
     "max_features": hp.quniform("skl_rf__max_features", 0.1, 1, 0.05),
     "min_samples_split": hp.quniform("skl_rf__min_samples_split", 1, 15, 1),
@@ -278,8 +278,8 @@ param_space_reg_ensemble = {
             "param": param_space_reg_skl_etr,
             "weight": 1.0,
         }, 
-        "reg_skl_rf": {
-            "param": param_space_reg_skl_rf,
+        "clf_skl_rf": {
+            "param": param_space_clf_skl_rf,
             "weight": 1.0,
         }, 
     },
@@ -325,7 +325,7 @@ param_space_dict = {
     "reg_skl_svr": param_space_reg_skl_svr,
     "reg_skl_knn": param_space_reg_skl_knn,
     "reg_skl_etr": param_space_reg_skl_etr,
-    "reg_skl_rf": param_space_reg_skl_rf,
+    "clf_skl_rf": param_space_clf_skl_rf,
     "reg_skl_gbm": param_space_reg_skl_gbm,
     "reg_skl_adaboost": param_space_reg_skl_adaboost,
     # keras
