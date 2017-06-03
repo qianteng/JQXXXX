@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import Lasso, Ridge, BayesianRidge
 from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor, GradientBoostingRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import log_loss
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials, space_eval
 
@@ -75,7 +76,7 @@ class Learner:
         if self.learner_name == "reg_skl_etr":
             return ExtraTreesRegressor(**self.param_dict)
         if self.learner_name == "reg_skl_rf":
-            return RandomForestRegressor(**self.param_dict)
+            return RandomForestClassifier(**self.param_dict)
         if self.learner_name == "reg_skl_gbm":
             return GradientBoostingRegressor(**self.param_dict)
         if self.learner_name == "reg_skl_adaboost":

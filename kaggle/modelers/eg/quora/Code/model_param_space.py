@@ -195,7 +195,7 @@ param_space_reg_skl_etr = {
     "verbose": 0,
 }
 
-## random forest regressor
+## random forest classifier
 param_space_reg_skl_rf = {
     "n_estimators": hp.quniform("skl_rf__n_estimators", skl_n_estimators_min, skl_n_estimators_max, skl_n_estimators_step),
     "max_features": hp.quniform("skl_rf__max_features", 0.1, 1, 0.05),
