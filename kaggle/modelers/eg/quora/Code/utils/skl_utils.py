@@ -88,7 +88,7 @@ class KNNRegressor:
 
 class AdaBoostClassifier:
     def __init__(self, base_estimator=None, n_estimators=50, max_features=1.0,
-                max_depth=6, learning_rate=1.0, loss='linear', random_state=None):
+                max_depth=6, learning_rate=1.0, algorithm='SAMME.R', random_state=None):
         if base_estimator and base_estimator == 'etc':
             base_estimator = ExtraTreeClassifier(max_depth=max_depth,
                                         max_features=max_features)
@@ -101,7 +101,7 @@ class AdaBoostClassifier:
                                     n_estimators=n_estimators,
                                     learning_rate=learning_rate,
                                     random_state=random_state,
-                                    loss=loss)
+                                    algorithm=algorithm)
 
     def __str__(self):
         return "AdaBoostClassifier"

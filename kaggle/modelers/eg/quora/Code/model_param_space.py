@@ -225,7 +225,7 @@ param_space_clf_skl_adaboost = {
     "learning_rate" : hp.qloguniform("learning_rate", np.log(0.002), np.log(0.1), 0.002),
     "max_features": hp.quniform("max_features", 0.1, 1, 0.05),
     "max_depth": hp.quniform("max_depth", 1, 10, 1),
-    "loss": hp.choice("loss", ["linear", "square", "exponential"]),
+    "algorithm": hp.choice("loss", ["SAMME", "SAMME.R"]),
     "random_state": skl_random_seed,
 }
 
