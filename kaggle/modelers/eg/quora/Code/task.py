@@ -75,7 +75,7 @@ class Learner:
             return KNNRegressor(**self.param_dict)
         if self.learner_name == "reg_skl_etr":
             return ExtraTreesRegressor(**self.param_dict)
-        if self.learner_name == "reg_skl_rf":
+        if self.learner_name == "clf_skl_rf":
             return RandomForestClassifier(**self.param_dict)
         if self.learner_name == "reg_skl_gbm":
             return GradientBoostingRegressor(**self.param_dict)
