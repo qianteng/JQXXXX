@@ -33,6 +33,15 @@ except:
 from model_param_space import ModelParamSpace
 
 
+def calc_sample_weight(y):
+    sample_weight = np.ones(len(y))
+    y_mean = np.mean(y_train)
+    w1 = config.TEST_MEAN / y_mean
+    w0 = (1 - config.TEST_MEAN) / (1 - y_mean)
+    sample_weight[y == 0] = w0
+    sample_weight[y == 1] = w1
+    return sample_weight
+
 class Learner:
     def __init__(self, learner_name, param_dict):
         self.learner_name = learner_name
