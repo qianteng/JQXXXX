@@ -98,9 +98,9 @@ class Learner:
     def fit(self, X, y, feature_names=None):
         weight = calc_sample_weight(y)
         if feature_names is not None:
-            self.learner.fit(X, y, feature_names, weight)
+            self.learner.fit(X, y, feature_names=feature_names, sample_weight=weight)
         else:
-            self.learner.fit(X, y, None, weight)
+            self.learner.fit(X, y, sample_weight=weight)
         return self
 
     def predict(self, X, feature_names=None):
