@@ -187,7 +187,7 @@ param_space_reg_skl_knn = {
 param_space_clf_skl_etr = {
     "n_estimators": hp.quniform("skl_etr__n_estimators", skl_n_estimators_min, skl_n_estimators_max, skl_n_estimators_step),
     "max_features": hp.quniform("skl_etr__max_features", 0.1, 1, 0.05),
-    "min_samples_split": hp.quniform("skl_etr__min_samples_split", 1, 15, 1),
+    "min_samples_split": hp.quniform("skl_etr__min_samples_split", 2, 15, 1),
     "min_samples_leaf": hp.quniform("skl_etr__min_samples_leaf", 1, 15, 1),
     "max_depth": hp.quniform("skl_etr__max_depth", 1, 10, 1),
     "random_state": skl_random_seed,
