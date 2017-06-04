@@ -195,6 +195,18 @@ param_space_clf_skl_etr = {
     "verbose": 0,
 }
 
+## extra trees classifier (parm for best single model)
+param_space_clf_skl_etr_best_single_model = {
+    "n_estimators": 720,
+    "max_features": 1.0,
+    "min_samples_split": 11,
+    "min_samples_leaf": 11,
+    "max_depth": 10,
+    "random_state": skl_random_seed,
+    "n_jobs": skl_n_jobs,
+    "verbose": 0,
+}
+
 ## random forest classifier
 param_space_clf_skl_rf = {
     "n_estimators": hp.quniform("skl_rf__n_estimators", skl_n_estimators_min, skl_n_estimators_max, skl_n_estimators_step),
@@ -278,6 +290,10 @@ param_space_reg_ensemble = {
             "param": param_space_clf_skl_etr,
             "weight": 1.0,
         }, 
+        "clf_skl_etr_best_single_model": {
+            "param": param_space_clf_skl_etr_best_single_model,
+            "weight": 1.0,
+        },
         "clf_skl_rf": {
             "param": param_space_clf_skl_rf,
             "weight": 1.0,
@@ -325,6 +341,7 @@ param_space_dict = {
     "reg_skl_svr": param_space_reg_skl_svr,
     "reg_skl_knn": param_space_reg_skl_knn,
     "clf_skl_etr": param_space_clf_skl_etr,
+    "clf_skl_etr_best_single_model": param_space_clf_skl_etr_best_single_model,
     "clf_skl_rf": param_space_clf_skl_rf,
     "clf_skl_gbm": param_space_clf_skl_gbm,
     "clf_skl_adaboost": param_space_clf_skl_adaboost,
