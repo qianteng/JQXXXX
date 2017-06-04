@@ -179,4 +179,6 @@ feature_dict = {
 'WordNet_Path_Similarity_Min_Max_question1_x_question2_1D' : (False, SimpleTransform()),
 'WordNet_Path_Similarity_Min_Mean_question1_x_question2_1D' : (False, SimpleTransform()),
 'WordNet_Path_Similarity_Min_Min_question1_x_question2_1D' : (False, SimpleTransform()),
+'ZFTurbo_pagerank_q1_1D' : (False, SimpleTransform()),
+'ZFTurbo_pagerank_q2_1D' : (False, SimpleTransform()),
 }
