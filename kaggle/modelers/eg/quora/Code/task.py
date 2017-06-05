@@ -21,6 +21,7 @@ from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor, Gradien
 from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier, GradientBoostingClassifier
 from sklearn.metrics import log_loss
 from sklearn.calibration import CalibratedClassifierCV
+from sklearn.model_selection import TimeSeriesSplit
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials, space_eval
 
 import config
@@ -75,7 +76,7 @@ class Learner:
         if self.learner_name == "reg_skl_knn":
             return KNNRegressor(**self.param_dict)
         if self.learner_name in ["clf_skl_etr", "clf_skl_etr_best_single_model"]:
-            return CalibratedClassifierCV(ExtraTreesClassifier(**self.param_dict))
+            return CalibratedClassifierCV(ExtraTreesClassifier(**self.param_dict), method='sigmoid', cv=TimeSeriesSplit())
         if self.learner_name == "clf_skl_rf":
             return RandomForestClassifier(**self.param_dict)
         if self.learner_name == "clf_skl_gbm":
