@@ -76,9 +76,9 @@ class Learner:
         if self.learner_name == "reg_skl_knn":
             return KNNRegressor(**self.param_dict)
         if self.learner_name in ["clf_skl_etr", "clf_skl_etr_best_single_model"]:
-            return CalibratedClassifierCV(ExtraTreesClassifier(**self.param_dict), method='sigmoid', cv=TimeSeriesSplit())
+            return CalibratedClassifierCV(ExtraTreesClassifier(**self.param_dict), method='isotonic', cv=TimeSeriesSplit())
         if self.learner_name == "clf_skl_rf":
-            return RandomForestClassifier(**self.param_dict)
+            return CalibratedClassifierCV(RandomForestClassifier(**self.param_dict), method='isotonic', cv=TimeSeriesSplit())
         if self.learner_name == "clf_skl_gbm":
             return GradientBoostingClassifier(**self.param_dict)
         if self.learner_name == "clf_skl_adaboost":
