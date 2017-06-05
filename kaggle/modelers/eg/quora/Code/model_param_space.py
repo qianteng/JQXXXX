@@ -197,10 +197,10 @@ param_space_clf_skl_etr = {
 
 ## extra trees classifier (parm for best single model)
 param_space_clf_skl_etr_best_single_model = {
-    "n_estimators": 720,
+    "n_estimators": 970,
     "max_features": 1.0,
     "min_samples_split": 11,
-    "min_samples_leaf": 11,
+    "min_samples_leaf": 2,
     "max_depth": 10,
     "random_state": skl_random_seed,
     "n_jobs": skl_n_jobs,
