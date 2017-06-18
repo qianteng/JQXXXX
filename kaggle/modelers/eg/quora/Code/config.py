@@ -33,6 +33,7 @@ OUTPUT_DIR = ROOT_DIR + "/Output"
 SUBM_DIR = OUTPUT_DIR + "/Subm"
 
 LOG_DIR = ROOT_DIR + "/Log"
+FIG_DIR = ROOT_DIR + "/Fig"
 
 # word2vec/doc2vec/glove
 WORD2VEC_MODEL_DIR = DATA_DIR + "/word2vec"
@@ -113,6 +114,6 @@ DIRS += [FEAT_DIR + "/Combine"]
 DIRS += [OUTPUT_DIR, SUBM_DIR]
 DIRS += [OUTPUT_DIR + "/All"]
 DIRS += ["{}/Run{}".format(OUTPUT_DIR, i + 1) for i in range(N_RUNS)]
-DIRS += [LOG_DIR]
+DIRS += [LOG_DIR, FIG_DIR]
 
 os_utils._create_dirs(DIRS)
