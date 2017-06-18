@@ -197,6 +197,18 @@ class XGBClassifier:
         return y_pred
 
     def plot_importance(self):
+        booster = self.model
+        importance_type = 'weight'
+
+        if isinstance(booster, XGBModel):
+            importance = booster.get_booster().get_score(importance_type=importance_type)
+        elif isinstance(booster, Booster):
+            importance = booster.get_score(importance_type=importance_type)
+        else:
+            raise ValueError('tree must be Booster, XGBModel or dict instance')
+
+        pkl_utils._save('importance.pkl', importance)
+
         ax = xgb.plot_importance(self.model)
         self.save_topn_features()
         return ax
