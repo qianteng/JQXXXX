@@ -90,9 +90,9 @@ class XGBRegressor:
         importance_type = 'weight'
 
         if isinstance(booster, XGBModel):
-            importance = booster.get_booster().get_fscore(importance_type=importance_type)
+            importance = booster.get_booster().get_fscore()
         elif isinstance(booster, Booster):
-            importance = booster.get_fscore(importance_type=importance_type)
+            importance = booster.get_fscore()
         else:
             raise ValueError('tree must be Booster, XGBModel or dict instance')
 
@@ -201,9 +201,9 @@ class XGBClassifier:
         importance_type = 'weight'
 
         if isinstance(booster, XGBModel):
-            importance = booster.get_booster().get_fscore(importance_type=importance_type)
+            importance = booster.get_booster().get_fscore()
         elif isinstance(booster, Booster):
-            importance = booster.get_fscore(importance_type=importance_type)
+            importance = booster.get_fscore()
         else:
             raise ValueError('tree must be Booster, XGBModel or dict instance')
 
