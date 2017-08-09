@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: Chenglong Chen <c.chenglong@gmail.com>
+@author: Eric Guo <guoanjie@gmail.com>
 @brief: wordnet similarity based features (veeerrry time consuming)
 @note: in our final submission, we are only able to generate WordNet_Path_Similarity between
        search_term and product_title in reasonable time.
