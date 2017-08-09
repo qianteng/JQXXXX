@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: Chenglong Chen <c.chenglong@gmail.com>
+@author: Eric Guo <guoanjie@gmail.com>
 @brief: first and last ngram features
 @note: in the final submission, we only used intersect count, NOT including intersect position.
 

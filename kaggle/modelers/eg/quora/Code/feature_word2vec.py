@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: Chenglong Chen <c.chenglong@gmail.com>
+@author: Eric Guo <guoanjie@gmail.com>
 @brief: word2vec based features
 
 """

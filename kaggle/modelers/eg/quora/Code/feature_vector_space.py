@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: Chenglong Chen <c.chenglong@gmail.com>
+@author: Eric Guo <guoanjie@gmail.com>
 @brief: vector space based features
         - char/word based ngram LSA & cosine similarity
         - char/word based ngram TFIDF & cosine similarity
